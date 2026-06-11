@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Firezer Demese - Senior SQL Server DBA & AI Data Tooling Engineer. 150+ production instances, 6TB databases, 2.5M daily transactions." />
+<title>Firezer Demese | Senior SQL Server DBA · AI Data Tooling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d11; --surface:#12151b; --surface2:#0e1116; --border:#1f232c;
+  --text:#e7e9ee; --muted:#8b93a1; --dim:#4b5563; --faint:#2d3340;
+  --green:#22d3a0; --amber:#f59e0b; --red:#f43f5e; --violet:#8b5cf6; --violet2:#6366f1;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(139,92,246,.35)}
+:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--faint);border-radius:4px}
+
+/* ---------- scroll progress ---------- */
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--violet),var(--green));z-index:1000;transition:width .1s linear}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:900;height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,4vw,40px);background:rgba(9,11,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px}
+.brand .mark{width:28px;height:28px;border:1px solid var(--violet);border-radius:7px;display:grid;place-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--violet);background:rgba(139,92,246,.08)}
+.status-chip{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);
+  border:1px solid rgba(34,211,160,.25);background:rgba(34,211,160,.06);border-radius:6px;padding:4px 10px;letter-spacing:.05em}
+.pulse{position:relative;width:8px;height:8px;flex-shrink:0}
+.pulse::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--green);opacity:.35;animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
+.pulse::after{content:"";position:absolute;inset:1.5px;border-radius:50%;background:var(--green)}
+@keyframes ping{75%,100%{transform:scale(2.4);opacity:0}}
+nav{display:flex;align-items:center;gap:4px}
+nav a{font-size:12.5px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:8px;border:1px solid transparent;transition:.18s}
+nav a:hover{color:var(--text)}
+nav a.active{color:var(--text);background:var(--surface);border-color:var(--border)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+  padding:9px 18px;border-radius:8px;border:1px solid var(--border);color:var(--muted);transition:.18s;cursor:pointer;background:transparent;letter-spacing:.03em}
+.btn:hover{color:var(--text);border-color:var(--dim)}
+.btn.primary{background:linear-gradient(135deg,var(--violet),var(--violet2));border:none;color:#fff}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn.ghost-green{color:var(--green);border-color:rgba(34,211,160,.3)}
+.btn.ghost-green:hover{background:rgba(34,211,160,.07)}
+@media(max-width:880px){nav{display:none}}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(18px,4.5vw,40px)}
+section{padding:clamp(64px,9vw,110px) 0;border-bottom:1px solid var(--border)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--violet)}
+h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:18px}
+.lede{color:var(--muted);max-width:640px;font-size:15.5px}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(64px,9vw,120px) 0 clamp(54px,7vw,90px);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero .eyebrow{color:var(--violet)}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(40px,7.5vw,76px);font-weight:700;letter-spacing:-.03em;line-height:1.04;margin-bottom:10px}
+.hero h1 .accent{color:var(--violet)}
+.typed-line{font-family:'JetBrains Mono',monospace;font-size:clamp(13px,1.7vw,15.5px);color:var(--green);min-height:1.7em;margin-bottom:8px}
+.typed-line .prompt{color:var(--dim)}
+.cursor{display:inline-block;width:8px;height:1.1em;background:var(--green);vertical-align:text-bottom;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero-sub{color:var(--muted);font-size:15px;max-width:560px;margin-bottom:30px}
+
+/* EKG pulse line */
+.ekg{width:100%;height:54px;margin:6px 0 30px;overflow:visible}
+.ekg path{fill:none;stroke:var(--green);stroke-width:1.6;opacity:.8;
+  stroke-dasharray:1200;stroke-dashoffset:1200;animation:trace 5.5s linear infinite}
+.ekg .ghost{stroke:var(--faint);opacity:.5;animation:none;stroke-dasharray:none;stroke-dashoffset:0}
+@keyframes trace{to{stroke-dashoffset:0}}
+
+/* metric cards (SQLGuardian style) */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:34px}
+@media(max-width:880px){.metrics{grid-template-columns:repeat(2,1fr)}}
+.metric{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:18px 20px}
+.metric.v{border-left-color:var(--violet)}
+.metric .label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.metric .value{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.4vw,34px);font-weight:700;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
+.metric.v .value{color:var(--violet)}
+.metric .sub{font-size:11.5px;color:var(--dim);margin-top:6px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(28px,5vw,64px);align-items:start}
+@media(max-width:880px){.about-grid{grid-template-columns:1fr}}
+.about-grid p{color:var(--muted);font-size:15.5px;margin-bottom:16px}
+.about-grid p strong{color:var(--text);font-weight:600}
+.sys-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2}
+.sys-card .row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dashed var(--faint);padding:3px 0}
+.sys-card .row:last-child{border-bottom:none}
+.sys-card .k{color:var(--dim)}
+.sys-card .ok{color:var(--green)}
+.sys-card .vi{color:var(--violet)}
+
+/* ---------- skills ---------- */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:980px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.skills-grid{grid-template-columns:1fr}}
+.skill{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;border-left:3px solid var(--faint);transition:.2s}
+.skill:hover{border-left-color:var(--violet);transform:translateY(-3px)}
+.skill .cat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin-bottom:8px}
+.skill h3{font-family:'Space Grotesk',sans-serif;font-size:16.5px;font-weight:600;margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:3px 9px}
+
+/* ---------- experience ---------- */
+.xp{display:flex;flex-direction:column;gap:14px}
+.xp-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 26px;border-left:3px solid var(--faint);transition:.2s}
+.xp-item.current{border-left-color:var(--green)}
+.xp-item:hover{transform:translateX(4px)}
+.xp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.xp-head h3{font-family:'Space Grotesk',sans-serif;font-size:17.5px;font-weight:600}
+.xp-head .org{color:var(--violet);font-size:13.5px;font-weight:500;margin-top:2px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:3px 10px;white-space:nowrap}
+.badge.run{color:var(--green);background:rgba(34,211,160,.08);border:1px solid rgba(34,211,160,.3)}
+.badge.done{color:var(--dim);background:var(--surface2);border:1px solid var(--border)}
+.xp-item p{color:var(--muted);font-size:14px;margin-bottom:10px}
+.xp-stats{display:flex;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim)}
+.xp-stats b{color:var(--green);font-weight:600}
+
+/* ---------- projects ---------- */
+.proj-featured{background:var(--surface);border:1px solid rgba(139,92,246,.35);border-radius:14px;padding:clamp(24px,3.5vw,36px);
+  display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,44px);margin-bottom:16px;position:relative;overflow:hidden}
+.proj-featured::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--green))}
+@media(max-width:920px){.proj-featured{grid-template-columns:1fr}}
+.proj-status{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.proj-featured h3{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.proj-tagline{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--green);margin-bottom:14px}
+.proj-featured p{color:var(--muted);font-size:14.5px;margin-bottom:14px}
+.proj-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.term{background:#07090d;border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;overflow:hidden;align-self:start}
+.term-bar{display:flex;align-items:center;gap:6px;background:var(--surface2);border-bottom:1px solid var(--border);padding:9px 14px;color:var(--dim);font-size:11px}
+.term-bar .dot{width:9px;height:9px;border-radius:50%}
+.term-body{padding:16px 18px;line-height:1.9}
+.t-dim{color:var(--dim)} .t-green{color:var(--green)} .t-violet{color:var(--violet)} .t-amber{color:var(--amber)} .t-red{color:var(--red)} .t-text{color:var(--text)}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;border-left:3px solid var(--amber);transition:.2s}
+.proj-card:hover{transform:translateY(-3px);border-color:var(--dim)}
+.proj-card h3{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;margin:10px 0 4px}
+.proj-card .one{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);margin-bottom:10px}
+.proj-card p{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+.badge.dev{color:var(--amber);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.3)}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,60px);align-items:center}
+@media(max-width:820px){.contact-grid{grid-template-columns:1fr}}
+.contact-links{display:flex;flex-direction:column;gap:10px}
+.clink{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:15px 20px;transition:.18s;font-size:14px}
+.clink:hover{border-color:var(--violet);transform:translateX(4px)}
+.clink .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.clink .val{color:var(--text);font-weight:500}
+footer{padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:12px;color:var(--faint)}
+footer .vi{color:var(--violet)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--green);
+  color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:8px;padding:10px 20px;transition:.3s;z-index:1001;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">FD</span>
+    <span>Firezer Demese</span>
+    <span class="status-chip"><span class="pulse"></span>OPEN TO ROLES</span>
+  </div>
+  <nav id="nav">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="btn" href="./Resume.pdf" download>↓ RESUME</a>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">SENIOR SQL SERVER DBA · AZURE · AI DATA TOOLING</div>
+    <h1>Firezer <span class="accent">Demese</span></h1>
+    <div class="typed-line"><span class="prompt">$ </span><span id="typed"></span><span class="cursor"></span></div>
+    <p class="hero-sub">I keep production databases alive at enterprise scale — and I build the AI tooling that explains what they're doing.</p>
+
+    <svg class="ekg" viewBox="0 0 1100 54" preserveAspectRatio="none" aria-hidden="true">
+      <path class="ghost" d="M0,27 L120,27 140,27 152,8 164,46 176,27 320,27 340,27 352,8 364,46 376,27 540,27 560,27 572,8 584,46 596,27 760,27 780,27 792,8 804,46 816,27 980,27 1000,27 1012,8 1024,46 1036,27 1100,27"/>
+      <path d="M0,27 L120,27 140,27 152,8 164,46 176,27 320,27 340,27 352,8 364,46 376,27 540,27 560,27 572,8 584,46 596,27 760,27 780,27 792,8 804,46 816,27 980,27 1000,27 1012,8 1024,46 1036,27 1100,27"/>
+    </svg>
+
+    <div class="metrics">
+      <div class="metric"><div class="label">Production Instances</div><div class="value">150+</div><div class="sub">managed at TransCore</div></div>
+      <div class="metric"><div class="label">Largest Database</div><div class="value">6 TB</div><div class="sub">tuned & highly available</div></div>
+      <div class="metric"><div class="label">Daily Transactions</div><div class="value">2.5M</div><div class="sub">production throughput</div></div>
+      <div class="metric v"><div class="label">Years in Production</div><div class="value">7+</div><div class="sub">TransCore · BofA · Shell</div></div>
+    </div>
+
+    <div class="hero-ctas">
+      <a class="btn primary" href="#projects">VIEW PROJECTS →</a>
+      <a class="btn ghost-green" href="https://github.com/Firezerdemese" target="_blank" rel="noopener">⌘ GITHUB</a>
+      <a class="btn" href="https://linkedin.com/in/firezer-demese-dba" target="_blank" rel="noopener">in LINKEDIN</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap reveal">
+    <div class="eyebrow">ABOUT</div>
+    <h2>Database depth. AI fluency. Production discipline.</h2>
+    <div class="about-grid">
+      <div>
+        <p>I'm a Senior SQL Server DBA with <strong>7+ years</strong> in enterprise production — currently managing <strong>150+ SQL Server instances</strong> at TransCore, with databases up to 6TB pushing 2.5 million transactions a day. Before that: regulated financial services at <strong>Bank of America</strong> and energy-sector data at <strong>Shell</strong>.</p>
+        <p>The work I care about now sits at the intersection of databases and AI: tools like <strong>SQLGuardian</strong>, where an LLM reads live DMV telemetry and explains blocking chains, generates remediation T-SQL, and answers natural-language questions about server health — grounded in real data, not guesses.</p>
+        <p>I build systems that are reliable, observable, and honest under pressure. Not just code that runs — infrastructure that holds.</p>
+      </div>
+      <div class="sys-card" aria-label="profile summary">
+        <div class="row"><span class="k">role</span><span class="t-text">Senior SQL Server DBA</span></div>
+        <div class="row"><span class="k">location</span><span class="t-text">Houston, TX · Remote</span></div>
+        <div class="row"><span class="k">stack</span><span class="vi">SQL Server · Azure · Python</span></div>
+        <div class="row"><span class="k">ai_layer</span><span class="vi">LLM tooling · eval harnesses</span></div>
+        <div class="row"><span class="k">education</span><span class="t-text">BS Computer Science</span></div>
+        <div class="row"><span class="k">cert</span><span class="t-text">DP-300 (in progress)</span></div>
+        <div class="row"><span class="k">status</span><span class="ok">● open_to_roles = true</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="wrap reveal">
+    <div class="eyebrow">SKILLS</div>
+    <h2>Technical arsenal</h2>
+    <div class="skills-grid">
+      <div class="skill">
+        <div class="cat">Database Engineering</div>
+        <h3>SQL Server at scale</h3>
+        <div class="tags"><span class="tag">T-SQL</span><span class="tag">Query Tuning</span><span class="tag">Index Design</span><span class="tag">Always On AG</span><span class="tag">DMVs</span><span class="tag">Execution Plans</span></div>
+      </div>
+      <div class="skill">
+        <div class="cat">Operations</div>
+        <h3>Production reliability</h3>
+        <div class="tags"><span class="tag">HA / DR</span><span class="tag">Backups & Recovery</span><span class="tag">Monitoring</span><span class="tag">Blocking Analysis</span><span class="tag">SQL Agent</span><span class="tag">Capacity Planning</span></div>
+      </div>
+      <div class="skill">
+        <div class="cat">Cloud</div>
+        <h3>Azure data platform</h3>
+        <div class="tags"><span class="tag">Azure SQL</span><span class="tag">Managed Instance</span><span class="tag">Data Factory</span><span class="tag">Container Apps</span><span class="tag">Migrations</span></div>
+      </div>
+      <div class="skill">
+        <div class="cat">AI & LLM</div>
+        <h3>AI-powered data tooling</h3>
+        <div class="tags"><span class="tag">LLM APIs</span><span class="tag">Prompt Engineering</span><span class="tag">Grounded Generation</span><span class="tag">SQL Eval</span><span class="tag">Groq / OpenAI / Anthropic</span></div>
+      </div>
+      <div class="skill">
+        <div class="cat">Backend</div>
+        <h3>APIs & pipelines</h3>
+        <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQLAlchemy</span><span class="tag">ETL</span><span class="tag">PowerShell</span><span class="tag">REST</span></div>
+      </div>
+      <div class="skill">
+        <div class="cat">DevOps</div>
+        <h3>Ship & operate</h3>
+        <div class="tags"><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">CI/CD</span><span class="tag">Linux</span><span class="tag">Bash</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience">
+  <div class="wrap reveal">
+    <div class="eyebrow">EXPERIENCE</div>
+    <h2>Work history</h2>
+    <div class="xp">
+      <div class="xp-item current">
+        <div class="xp-head">
+          <div><h3>Senior SQL Server DBA</h3><div class="org">TransCore · Remote</div></div>
+          <span class="badge run">● Running · Jan 2023 — Present</span>
+        </div>
+        <p>Own database reliability for a national tolling platform. Performance tuning, HA/DR, automation, and incident response across a large production estate.</p>
+        <div class="xp-stats"><span><b>150+</b> instances</span><span><b>6TB</b> largest DB</span><span><b>2.5M</b> txns/day</span><span><b>100%</b> remote</span></div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-head">
+          <div><h3>SQL Server DBA</h3><div class="org">Bank of America · Hybrid</div></div>
+          <span class="badge done">Completed · Jun 2020 — Dec 2022</span>
+        </div>
+        <p>Database administration in a regulated financial-services environment — audited backups, security hardening, change control, and performance work under SOX scrutiny.</p>
+        <div class="xp-stats"><span><b>SOX</b> compliance</span><span><b>0</b> audit findings</span><span><b>24/7</b> on-call rotation</span></div>
+      </div>
+      <div class="xp-item">
+        <div class="xp-head">
+          <div><h3>Database Administrator</h3><div class="org">Shell · Houston, TX</div></div>
+          <span class="badge done">Completed · Aug 2019 — May 2020</span>
+        </div>
+        <p>Supported energy-sector data workloads: query optimization, schema design, ETL support, and maintenance automation for operational reporting databases.</p>
+        <div class="xp-stats"><span><b>60%</b> query-runtime reduction</span><span><b>ETL</b> pipeline support</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="wrap reveal">
+    <div class="eyebrow">PROJECTS</div>
+    <h2>Things I've built</h2>
+    <p class="lede" style="margin-bottom:30px">Real tools, real data, real AI — built on the production patterns I use every day.</p>
+
+    <!-- FEATURED: SQLGuardian -->
+    <article class="proj-featured">
+      <div>
+        <div class="proj-status">
+          <span class="status-chip"><span class="pulse"></span>LIVE</span>
+          <span class="badge done">v1.0</span>
+        </div>
+        <h3>SQLGuardian</h3>
+        <div class="proj-tagline">Ask the AI why your server is slow. Get a T-SQL fix back in seconds.</div>
+        <p>AI-powered SQL Server health monitoring platform. Runs 7 DMV-based checks every 60 seconds — blocking chains, wait stats, agent jobs, disk, backups — and feeds live telemetry to an LLM that explains incidents in plain English, generates remediation T-SQL, and answers natural-language questions grounded in real server data.</p>
+        <p>Detects live blocking with head-blocker session IDs and locked SQL. The AI names the blocker and writes the KILL script. Dual-audience output: a technical DBA view and a one-paragraph management summary from the same snapshot.</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQL Server 2022</span><span class="tag">React</span><span class="tag">Docker</span><span class="tag">Groq · Llama 3.3-70b</span><span class="tag">DMVs</span>
+        </div>
+        <div class="proj-links">
+          <a class="btn primary" href="https://github.com/Firezerdemese/sqlguardian" target="_blank" rel="noopener">⌘ GITHUB</a>
+          <a class="btn" href="https://github.com/Firezerdemese/sqlguardian#readme" target="_blank" rel="noopener">▶ DEMO</a>
+        </div>
+      </div>
+      <div class="term" aria-hidden="true">
+        <div class="term-bar">
+          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
+          <span style="margin-left:8px">sqlguardian · ai brain</span>
+        </div>
+        <div class="term-body">
+          <div><span class="t-dim">$</span> <span class="t-text">ask "why is my server slow?"</span></div>
+          <div class="t-dim">→ reading sys.dm_os_wait_stats…</div>
+          <div class="t-dim">→ reading sys.dm_exec_requests…</div>
+          <div>&nbsp;</div>
+          <div><span class="t-red">● BLOCKING DETECTED</span></div>
+          <div class="t-text">Session 52 is the head blocker —</div>
+          <div class="t-text">holding IX lock on Sales.Orders</div>
+          <div class="t-text">for 37s, blocking 3 sessions.</div>
+          <div>&nbsp;</div>
+          <div><span class="t-violet">▸ remediation.sql</span></div>
+          <div><span class="t-green">KILL 52; -- requires approval</span></div>
+          <div><span class="t-amber">risk: medium · approval: required</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Upcoming projects -->
+    <div class="proj-grid">
+      <article class="proj-card">
+        <span class="badge dev">⚙ IN DEVELOPMENT</span>
+        <h3>QueryLens — LLM SQL Eval Harness</h3>
+        <div class="one">Benchmark how well LLMs write SQL — against a real database.</div>
+        <p>Natural-language questions → LLM-generated SQL → executed against a live schema → scored vs gold answers. Produces a model leaderboard with error analysis: wrong joins, hallucinated columns, bad aggregations.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Spider dataset</span><span class="tag">Multi-model eval</span></div>
+      </article>
+      <article class="proj-card">
+        <span class="badge dev">⚙ IN DEVELOPMENT</span>
+        <h3>DataFlow — Pipeline + AI Enrichment</h3>
+        <div class="one">End-to-end data pipeline with an LLM enrichment step.</div>
+        <p>Public dataset → orchestrated ETL → warehouse model → LLM-powered classification/enrichment stage → dashboard. The data-engineering proof piece: ingestion, orchestration, modeling, and AI in one pipeline.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Airflow</span><span class="tag">PostgreSQL</span><span class="tag">LLM enrichment</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" style="border-bottom:none">
+  <div class="wrap reveal">
+    <div class="eyebrow">CONTACT</div>
+    <div class="contact-grid">
+      <div>
+        <h2>Let's connect.</h2>
+        <p class="lede">Open to Senior DBA, Database Engineering, and AI Data Tooling roles — remote or Houston. If you're building something where databases meet AI, I want to hear about it.</p>
+        <div class="hero-ctas" style="margin-top:24px">
+          <a class="btn primary" href="mailto:firezer.demese@gmail.com">✉ EMAIL ME</a>
+          <a class="btn" href="./Resume.pdf" download>↓ RESUME</a>
+        </div>
+      </div>
+      <div class="contact-links">
+        <button class="clink" id="copyEmail" type="button">
+          <span class="lab">EMAIL</span><span class="val">firezer.demese@gmail.com</span>
+        </button>
+        <a class="clink" href="https://github.com/Firezerdemese" target="_blank" rel="noopener">
+          <span class="lab">GITHUB</span><span class="val">github.com/Firezerdemese</span>
+        </a>
+        <a class="clink" href="https://linkedin.com/in/firezer-demese-dba" target="_blank" rel="noopener">
+          <span class="lab">LINKEDIN</span><span class="val">in/firezer-demese-dba</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© 2026 <span class="vi">Firezer Demese</span> · Senior SQL Server DBA</span>
+    <span>status: <span style="color:var(--green)">healthy</span> · uptime: 7+ yrs</span>
+  </footer>
+</div>
+
+<div class="toast" id="toast">email copied ✓</div>
+
+<script>
+// scroll progress
+const prog = document.getElementById('progress');
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+}, {passive:true});
+
+// typed line
+const phrases = [
+  'monitoring 150+ production instances…',
+  'explaining blocking chains with LLMs…',
+  'tuning queries on 6TB databases…',
+  'building AI-powered DBA tooling…',
+  'sqlguardian --status healthy ✓'
+];
+const typedEl = document.getElementById('typed');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced) { typedEl.textContent = phrases[4]; }
+else {
+  let pi = 0, ci = 0, deleting = false;
+  (function tick(){
+    const p = phrases[pi];
+    typedEl.textContent = p.slice(0, ci);
+    if (!deleting && ci < p.length) { ci++; setTimeout(tick, 42); }
+    else if (!deleting) { deleting = true; setTimeout(tick, 1700); }
+    else if (ci > 0) { ci--; setTimeout(tick, 18); }
+    else { deleting = false; pi = (pi+1) % phrases.length; setTimeout(tick, 350); }
+  })();
+}
+
+// reveal on scroll
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// active nav
+const links = document.querySelectorAll('#nav a');
+const secs = [...links].map(a => document.querySelector(a.getAttribute('href')));
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) {
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+  }
+}), {rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(s => s && navIO.observe(s));
+
+// copy email
+document.getElementById('copyEmail').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText('firezer.demese@gmail.com');
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  } catch { location.href = 'mailto:firezer.demese@gmail.com'; }
+});
+</script>
+</body>
+</html>
