@@ -224,6 +224,24 @@ footer .vi{color:var(--violet)}
 .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--green);
   color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:8px;padding:10px 20px;transition:.3s;z-index:1001;opacity:0}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ---------- video lightbox ---------- */
+.btn.watch{color:var(--accent);border-color:rgba(212,168,67,.4)}
+.btn.watch:hover{color:var(--accent);background:rgba(212,168,67,.08);border-color:var(--accent)}
+.lightbox{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);
+  background:rgba(5,7,10,.82);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .28s ease}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox-inner{position:relative;width:min(1100px,100%);max-height:90vh;background:#07090d;border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:scale(.96);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.lightbox.open .lightbox-inner{transform:scale(1)}
+.lightbox-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);
+  background:var(--surface2);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.lightbox-bar .lb-title{display:flex;align-items:center;gap:9px}
+.lightbox-bar .lb-title .dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
+.lightbox-close{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;width:30px;height:30px;
+  font-size:16px;cursor:pointer;transition:.15s;line-height:1;display:grid;place-items:center}
+.lightbox-close:hover{color:var(--text);border-color:var(--dim)}
+.lightbox video{display:block;width:100%;max-height:calc(90vh - 46px);background:#000}
 </style>
 </head>
 <body>
@@ -258,7 +276,7 @@ footer .vi{color:var(--violet)}
     <div class="hero-badges">
       <span class="hbadge">Houston, TX</span>
       <span class="hbadge">SQL Server · Automation · Tuning</span>
-      <span class="hbadge live">2 AI products live</span>
+      <span class="hbadge live">3 AI products live</span>
       <span class="hbadge">Open to roles</span>
     </div>
     <div class="hero-ctas">
@@ -293,7 +311,7 @@ footer .vi{color:var(--violet)}
     <div class="about-stats">
       <div><b>7+</b><span>years SQL &amp; databases</span></div>
       <div><b>150+</b><span>production instances</span></div>
-      <div><b>2</b><span>AI products live</span></div>
+      <div><b>3</b><span>AI products live</span></div>
       <div><b>3</b><span>domains: DBA · AI · full stack</span></div>
     </div>
   </div>
@@ -419,8 +437,9 @@ footer .vi{color:var(--violet)}
           <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQL Server 2022</span><span class="tag">React</span><span class="tag">Docker</span><span class="tag">Groq · Llama 3.3-70b</span><span class="tag">DMVs</span>
         </div>
         <div class="proj-links">
+          <a class="btn live-cta" href="./sqlguardian-demo/" target="_blank" rel="noopener">👉 LIVE DASHBOARD · CLICK ME</a>
+          <button class="btn watch" type="button" data-video="./assets/sqlguardian-demo.mp4" data-video-title="sqlguardian · demo walkthrough">▶ WATCH DEMO</button>
           <a class="btn primary" href="https://github.com/Firezerdemese/sqlguardian" target="_blank" rel="noopener">⌘ GITHUB</a>
-          <a class="btn" href="http://localhost:8000/dashboard/" target="_blank" rel="noopener">▶ DASHBOARD DEMO</a>
         </div>
       </div>
       <div class="term" aria-hidden="true">
@@ -487,21 +506,59 @@ footer .vi{color:var(--violet)}
       </div>
     </article>
 
+    <!-- FEATURED: FlowLens (live) -->
+    <article class="proj-featured" style="margin-top:16px">
+      <div>
+        <div class="proj-status">
+          <span class="status-chip"><span class="pulse"></span>LIVE</span>
+        </div>
+        <h3>FlowLens</h3>
+        <div class="proj-tagline">The pipeline said "Succeeded." It still dropped a third of your rows.</div>
+        <p>An AI-native <strong>data reliability platform</strong> for SQL Server ETL. A stored proc can finish with zero errors, log <em>Succeeded</em>, and silently drop 38% of its rows to one bad JOIN. FlowLens sits between staging and production as a <strong>Write-Audit-Publish</strong> gate and refuses to publish a batch until it clears data contracts, source-vs-target reconciliation, and an IsolationForest anomaly check.</p>
+        <p>The design line I care about: <strong>the AI never decides pass/fail.</strong> Every verdict is deterministic SQL and statistics — the LLM only writes the plain-English incident report, grounded in the exact evidence the gate collected. An AI that can't hallucinate a "pass" is one you can put in front of production.</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQL Server 2022</span><span class="tag">scikit-learn</span><span class="tag">Groq · Llama 3.3-70b</span><span class="tag">Data Contracts</span>
+        </div>
+        <div class="proj-links">
+          <a class="btn live-cta" href="./flowlens-demo/" target="_blank" rel="noopener">👉 LIVE DEMO · CLICK ME</a>
+          <a class="btn primary" href="https://github.com/Firezerdemese/flowlens" target="_blank" rel="noopener">⌘ GITHUB</a>
+        </div>
+      </div>
+      <div class="term" aria-hidden="true">
+        <div class="term-bar">
+          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
+          <span style="margin-left:8px">flowlens · audit gate</span>
+        </div>
+        <div class="term-body" style="line-height:1.7">
+          <div><span class="t-dim">$</span> <span class="t-text">run bad batch D20260707</span></div>
+          <div class="t-dim">→ write 48,004 rows to staging</div>
+          <div class="t-dim">→ audit: contracts · recon · anomaly</div>
+          <div>&nbsp;</div>
+          <div><span class="t-red">● VERDICT: FAIL</span></div>
+          <div class="t-amber">• row_volume: 30,180 vs 48k ±15%</div>
+          <div class="t-amber">• recon diff 37.8% · 761 meters lost</div>
+          <div>&nbsp;</div>
+          <div><span class="t-green">✓ production untouched</span></div>
+          <div><span class="t-violet">▸ quarantined + AI incident report</span></div>
+        </div>
+      </div>
+    </article>
+
     <!-- Upcoming -->
-    <div class="proj-grid">
-      <article class="proj-card">
-        <span class="badge dev">⚙ IN DEVELOPMENT</span>
-        <h3>DataFlow - Pipeline + AI Enrichment</h3>
-        <div class="one">End-to-end data pipeline with an LLM enrichment step.</div>
-        <p>Public dataset → orchestrated ETL → warehouse model (bronze/silver/gold) → LLM-powered classification and enrichment → dashboard. The data-engineering proof piece: ingestion, orchestration, modeling, and AI in one pipeline.</p>
-        <div class="tags"><span class="tag">Python</span><span class="tag">Airflow</span><span class="tag">PostgreSQL</span><span class="tag">dbt</span><span class="tag">LLM enrichment</span></div>
-      </article>
+    <div class="proj-grid" style="margin-top:16px">
       <article class="proj-card">
         <span class="badge dev">⚙ IN DEVELOPMENT</span>
         <h3>AuditLens - DB Security &amp; Anomaly Detection</h3>
         <div class="one">Audit evidence packs + AI anomaly detection for database access.</div>
         <p>Generates SOX/HIPAA-mapped evidence packs, inventories role-based access and privilege creep, and flags unusual access patterns with statistical baselines plus an Isolation Forest model. Built from regulated-environment DBA work.</p>
         <div class="tags"><span class="tag">Python</span><span class="tag">SQL Server</span><span class="tag">scikit-learn</span><span class="tag">RBAC</span><span class="tag">LLM narration</span></div>
+      </article>
+      <article class="proj-card">
+        <span class="badge dev">⚙ IN DEVELOPMENT</span>
+        <h3>Overhear - Local Meeting Copilot</h3>
+        <div class="one">On-device transcription + on-demand LLM answers.</div>
+        <p>A quiet Electron overlay that live-transcribes your own meetings locally with whisper.cpp (no audio leaves the machine) and answers a typed question on demand via Groq. Privacy-first by construction: the only network call fires when you ask.</p>
+        <div class="tags"><span class="tag">Electron</span><span class="tag">Node.js</span><span class="tag">whisper.cpp</span><span class="tag">Groq</span><span class="tag">WASAPI</span></div>
       </article>
     </div>
   </div>
@@ -538,11 +595,22 @@ footer .vi{color:var(--violet)}
 <div class="wrap">
   <footer>
     <span>© 2026 <span class="vi">Firezer Demese</span> · DBA/DB Engineer</span>
-    <span>status: <span style="color:var(--green)">open to roles</span> · 2 products live</span>
+    <span>status: <span style="color:var(--green)">open to roles</span> · 3 products live</span>
   </footer>
 </div>
 
 <div class="toast" id="toast">email copied ✓</div>
+
+<!-- video lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project demo video">
+  <div class="lightbox-inner">
+    <div class="lightbox-bar">
+      <span class="lb-title"><span class="dot"></span><span id="lb-title-text">demo</span></span>
+      <button class="lightbox-close" id="lb-close" type="button" aria-label="Close video">✕</button>
+    </div>
+    <video id="lb-video" controls playsinline preload="none"></video>
+  </div>
+</div>
 
 <script>
 // floating constellation (project/skill words, color-coded by domain)
@@ -630,6 +698,33 @@ const navIO = new IntersectionObserver(es => es.forEach(e => {
   }
 }), {rootMargin:'-40% 0px -55% 0px'});
 secs.forEach(s => s && navIO.observe(s));
+
+// video lightbox
+(function(){
+  const lb = document.getElementById('lightbox');
+  const vid = document.getElementById('lb-video');
+  const titleEl = document.getElementById('lb-title-text');
+  const closeBtn = document.getElementById('lb-close');
+  function open(src, title){
+    vid.src = src;
+    titleEl.textContent = title || 'demo';
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    vid.play().catch(()=>{});
+  }
+  function close(){
+    lb.classList.remove('open');
+    vid.pause();
+    document.body.style.overflow = '';
+    setTimeout(() => { if (!lb.classList.contains('open')) vid.removeAttribute('src'); }, 300);
+  }
+  document.querySelectorAll('[data-video]').forEach(btn => {
+    btn.addEventListener('click', () => open(btn.getAttribute('data-video'), btn.getAttribute('data-video-title')));
+  });
+  closeBtn.addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
+})();
 
 // copy email
 document.getElementById('copyEmail').addEventListener('click', async () => {

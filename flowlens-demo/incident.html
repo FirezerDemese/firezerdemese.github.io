@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowLens — Incident</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237c3aed'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='2.4'/%3E%3Cline x1='21.5' y1='21.5' x2='26' y2='26' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="6.5"/><line x1="16" y1="16" x2="20.5" y2="20.5"/>
+                </svg>
+            </div>
+            <div>
+                <h1>FlowLens</h1>
+                <nav class="crumbs"><a href="/" id="back-link">← Dashboard</a><span>/</span><span>Incident detail</span></nav>
+            </div>
+        </div>
+    </header>
+    <div class="demo-banner"><strong>Live demo</strong><span>&mdash; fully client-side simulation of the Write-Audit-Publish engine. Click the buttons: it behaves exactly like the real SQL Server-backed app.</span><a href="https://github.com/Firezerdemese/flowlens" target="_blank" rel="noopener">View source</a></div>
+
+    <section class="incident-hero" id="incident-panel" data-incident-id="">
+        <h2 id="incident-title">Loading…</h2>
+        <div class="badge-row">
+            <span class="badge badge-neutral" id="incident-severity">severity</span>
+            <span class="badge badge-neutral" id="incident-status">status</span>
+            <span class="badge badge-neutral" id="incident-confidence">confidence</span>
+        </div>
+    </section>
+
+    <div class="report-grid">
+        <div class="report-card">
+            <h3>Root Cause <span class="ai-chip">AI-written</span></h3>
+            <p id="incident-root-cause">—</p>
+        </div>
+        <div class="report-card">
+            <h3>Downstream Impact <span class="ai-chip">AI-written</span></h3>
+            <p id="incident-downstream">—</p>
+        </div>
+        <div class="report-card">
+            <h3>Recommended Action <span class="ai-chip">AI-written</span></h3>
+            <p id="incident-action">—</p>
+        </div>
+    </div>
+
+    <section class="panel" style="margin-top:16px">
+        <div class="panel-head">
+            <h2>Deterministic Evidence</h2>
+            <span class="count-chip" id="evidence-count">0</span>
+        </div>
+        <p class="evidence-note">Collected by SQL and statistics before the AI saw anything — the report above is grounded in exactly this data.</p>
+        <div id="evidence-list"><div class="evidence-block">Loading…</div></div>
+    </section>
+
+    <footer>
+        <span><strong style="color:var(--violet)">FlowLens</strong> · deterministic decisions, AI-written explanations</span>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+    <script>window.FLOWLENS_DEMO = true;</script>
+    <script src="static/app.js"></script>
+</body>
+</html>

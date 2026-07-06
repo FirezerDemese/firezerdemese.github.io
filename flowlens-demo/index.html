@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowLens — Data Reliability Platform</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237c3aed'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='2.4'/%3E%3Cline x1='21.5' y1='21.5' x2='26' y2='26' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="6.5"/><line x1="16" y1="16" x2="20.5" y2="20.5"/>
+                </svg>
+            </div>
+            <div>
+                <h1>FlowLens</h1>
+                <p class="sub">AI-native <strong>data reliability platform</strong> for SQL Server ETL — deterministic gate, AI-written incident reports.</p>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="btn-run-good" class="btn btn-good"><span class="spinner"></span>▶ Run Good Batch</button>
+            <button id="btn-run-bad" class="btn btn-bad"><span class="spinner"></span>⚠ Run Bad Batch</button>
+            <button id="btn-reset" class="btn btn-reset"><span class="spinner"></span>Reset Demo</button>
+        </div>
+    </header>
+    <div class="demo-banner"><strong>Live demo</strong><span>&mdash; fully client-side simulation of the Write-Audit-Publish engine. Click the buttons: it behaves exactly like the real SQL Server-backed app.</span><a href="https://github.com/Firezerdemese/flowlens" target="_blank" rel="noopener">View source</a></div>
+
+    <!-- Write → Audit → Publish pipeline strip (animates during a run) -->
+    <div class="pipeline" id="pipeline" aria-label="Write-Audit-Publish pipeline">
+        <div class="pipe-node" data-stage="write">
+            <div class="pn-label">Write</div>
+            <div class="pn-title">staging.MeterReadingsRaw</div>
+            <div class="pn-desc">~48k smart-meter readings per batch</div>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </div>
+        <div class="pipe-node audit" data-stage="audit">
+            <div class="pn-label">Audit — deterministic gate</div>
+            <div class="pipe-checks">
+                <div class="pipe-check"><span class="dot" data-check="contracts"></span>Data contracts</div>
+                <div class="pipe-check"><span class="dot" data-check="recon"></span>Reconciliation (rows · sums · meters)</div>
+                <div class="pipe-check"><span class="dot" data-check="anomaly"></span>IsolationForest (supporting signal)</div>
+            </div>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </div>
+        <div class="pipe-node outcome-publish" data-stage="publish">
+            <div class="pn-label">Publish</div>
+            <div class="pn-title">dbo.FactConsumption</div>
+            <div class="pn-desc">verdict = pass → real proc runs</div>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </div>
+        <div class="pipe-node outcome-quarantine" data-stage="quarantine">
+            <div class="pn-label">Quarantine</div>
+            <div class="pn-title">+ AI incident report</div>
+            <div class="pn-desc">verdict = fail → production untouched</div>
+        </div>
+    </div>
+
+    <section class="overview" id="overview">
+        <div class="card gauge-card">
+            <div class="gauge-wrap">
+                <svg width="92" height="92" viewBox="0 0 92 92">
+                    <circle class="gauge-track" cx="46" cy="46" r="39"/>
+                    <circle class="gauge-bar" id="gauge-bar" cx="46" cy="46" r="39"
+                            stroke-dasharray="245" stroke-dashoffset="245"/>
+                </svg>
+                <div class="gauge-num" id="health-score">—</div>
+            </div>
+            <div class="gauge-meta">
+                <div class="card-label">Health Score</div>
+                <div class="last-run" id="last-run">no runs yet</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-label">Published Batches</div>
+            <div class="card-value good" id="healthy-count">—</div>
+            <div class="card-hint">reached dbo.FactConsumption</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Bad Batches Blocked</div>
+            <div class="card-value bad" id="quarantined-count">—</div>
+            <div class="card-hint" id="prevention-rate">quarantined before production</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Open Incidents</div>
+            <div class="card-value" id="incidents-open">—</div>
+            <div class="card-hint">each with an AI-written report</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Contracts Auto-Generated</div>
+            <div class="card-value violet" id="contracts-generated">—</div>
+            <div class="card-hint">from profiling stats</div>
+        </div>
+        <div class="card">
+            <div class="card-label">Avg Detection Latency</div>
+            <div class="card-value" id="detection-latency">—</div>
+            <div class="card-hint">full audit gate, per batch</div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Pipeline Runs — Write · Audit · Publish</h2>
+            <span class="count-chip" id="runs-count">0</span>
+        </div>
+        <div class="panel-body">
+            <table>
+                <thead><tr><th>Batch</th><th>Verdict</th><th>Published</th><th>Quarantined</th><th>Started</th><th>Summary</th></tr></thead>
+                <tbody id="runs-body"><tr class="empty-row"><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Data Contracts</h2>
+            <span class="count-chip" id="contracts-count">0</span>
+        </div>
+        <div class="panel-body">
+            <table>
+                <thead><tr><th>Table</th><th>Column</th><th>Rule</th><th>Status</th><th>Confidence</th><th>Rationale</th><th>Action</th></tr></thead>
+                <tbody id="contracts-body"><tr class="empty-row"><td colspan="7">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Incidents</h2>
+            <span class="count-chip" id="incidents-count">0</span>
+        </div>
+        <div class="panel-body">
+            <table>
+                <thead><tr><th>Batch</th><th>Severity</th><th>Status</th><th>Title</th><th>Confidence</th><th></th></tr></thead>
+                <tbody id="incidents-body"><tr class="empty-row"><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <span><strong style="color:var(--violet)">FlowLens</strong> · deterministic decisions, AI-written explanations — the LLM never decides pass/fail</span>
+        <span>SQL Server · FastAPI · IsolationForest · Groq Llama 3.3-70B</span>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+    <script>window.FLOWLENS_DEMO = true;</script>
+    <script src="static/app.js"></script>
+</body>
+</html>
