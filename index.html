@@ -175,10 +175,12 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,38px);font-
 .xp-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 26px;border-left:3px solid var(--faint);transition:.2s}
 .xp-item.current{border-left-color:var(--green)}
 .xp-item:hover{transform:translateX(4px)}
-.xp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.xp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:nowrap;margin-bottom:8px}
+.xp-head>div:first-child{flex:1 1 auto;min-width:0}
 .xp-head h3{font-family:'Space Grotesk',sans-serif;font-size:17.5px;font-weight:600}
 .xp-head .org{color:var(--violet);font-size:13.5px;font-weight:500;margin-top:2px}
-.badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:3px 10px;white-space:nowrap}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:3px 10px;white-space:nowrap;flex-shrink:0;margin-left:auto;align-self:flex-start}
+@media(max-width:560px){.xp-head{flex-wrap:wrap}.xp-head .badge{margin-left:0}}
 .badge.run{color:var(--green);background:rgba(34,211,160,.08);border:1px solid rgba(34,211,160,.3)}
 .badge.done{color:var(--dim);background:var(--surface2);border:1px solid var(--border)}
 .xp-item p{color:var(--muted);font-size:14px;margin-bottom:10px}
@@ -564,9 +566,10 @@ footer .vi{color:var(--violet)}
     <div class="contact-grid">
       <div>
         <h2>Let's connect.</h2>
-        <p class="lede">Open to roles in database administration, database engineering, and AI infrastructure, remote or in Houston. If you're building something where databases meet AI, I'd love to hear about it.</p>
+        <p class="lede">Open to roles in database administration, database engineering, database development, and AI-enabled infrastructure — remote or in Houston, and open to relocate. If you're planning to build something where databases meet AI, I'd love to hear about it. My contact is below — let's discuss how I can help.</p>
         <div class="hero-ctas" style="margin-top:24px">
           <a class="btn primary" href="mailto:firezer.demese@gmail.com">✉ EMAIL ME</a>
+          <a class="btn" href="tel:+13468717474">☎ +1 346 871 7474</a>
           <a class="btn" href="./Resume.pdf" download>↓ RESUME</a>
         </div>
       </div>
@@ -574,6 +577,9 @@ footer .vi{color:var(--violet)}
         <button class="clink" id="copyEmail" type="button">
           <span class="lab">EMAIL</span><span class="val">firezer.demese@gmail.com</span>
         </button>
+        <a class="clink" href="tel:+13468717474">
+          <span class="lab">PHONE</span><span class="val">+1 346 871 7474</span>
+        </a>
         <a class="clink" href="https://github.com/Firezerdemese" target="_blank" rel="noopener">
           <span class="lab">GITHUB</span><span class="val">github.com/Firezerdemese</span>
         </a>
