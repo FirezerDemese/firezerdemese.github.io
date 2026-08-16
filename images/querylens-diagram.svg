@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 412" width="600" height="412" role="img" aria-label="QueryLens request path">
+  <style>
+    .bg    { fill:#141b24; stroke:#242e3a; }
+    .box   { fill:#1e2833; stroke:#2f3b49; }
+    .box-a { fill:#241f16; stroke:#d4a655; }
+    .box-o { fill:#1b242e; stroke:#3a4756; }
+    .t     { font-family:ui-monospace,'Courier New',monospace; font-size:12px; fill:#e8e4dc; text-anchor:middle; }
+    .s     { font-family:ui-monospace,'Courier New',monospace; font-size:9.5px; fill:#97a1af; text-anchor:middle; }
+    .cap   { font-family:ui-monospace,'Courier New',monospace; font-size:10px; fill:#5c6774; }
+    .gold  { fill:#d4a655; }
+    .arrow { stroke:#5c6774; stroke-width:1.2; fill:none; }
+  </style>
+
+  <defs>
+    <marker id="ah" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5c6774"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0.5" y="0.5" width="599" height="411" rx="6"/>
+  <text class="cap" x="20" y="26">querylens &#183; request path</text>
+
+  <rect class="box" x="25" y="48" width="170" height="52" rx="5"/>
+  <text class="t" x="110" y="72">Ask</text>
+  <text class="s" x="110" y="88">English to SQL</text>
+
+  <rect class="box" x="215" y="48" width="170" height="52" rx="5"/>
+  <text class="t" x="300" y="72">Analyze</text>
+  <text class="s" x="300" y="88">anti-pattern scan</text>
+
+  <rect class="box" x="405" y="48" width="170" height="52" rx="5"/>
+  <text class="t" x="490" y="72">Evaluate</text>
+  <text class="s" x="490" y="88">model SQL vs gold</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M110,100 L110,120 L185,120 L185,140"/>
+  <path class="arrow" marker-end="url(#ah)" d="M300,100 L300,140"/>
+  <path class="arrow" marker-end="url(#ah)" d="M490,100 L490,120 L415,120 L415,140"/>
+
+  <rect class="box-a" x="130" y="144" width="340" height="54" rx="5"/>
+  <text class="t gold" x="300" y="169">Safety parser</text>
+  <text class="s" x="300" y="185">rejects writes, DDL, multi-statement input</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M300,198 L300,232"/>
+
+  <rect class="box" x="180" y="236" width="240" height="52" rx="5"/>
+  <text class="t" x="300" y="260">PostgreSQL</text>
+  <text class="s" x="300" y="276">read-only connection</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M300,288 L300,322"/>
+
+  <rect class="box-o" x="110" y="326" width="380" height="54" rx="5"/>
+  <text class="t" x="300" y="351">Rows, score, rewrite</text>
+  <text class="s" x="300" y="367">plus a per-model accuracy report</text>
+</svg>

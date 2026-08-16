@@ -1,725 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Firezer Demese - Senior SQL Server DBA & AI Data Tooling Engineer. 150+ production instances, 6TB databases, 2.5M daily transactions." />
-<title>Firezer Demese | DBA · Data & AI Tooling</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238b5cf6'/%3E%3Ctext x='16' y='22' font-family='Arial,Helvetica,sans-serif' font-size='15' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EFD%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0b0d11; --surface:#12151b; --surface2:#0e1116; --border:#1f232c;
-  --text:#e7e9ee; --muted:#8b93a1; --dim:#4b5563; --faint:#2d3340;
-  --green:#22d3a0; --amber:#f59e0b; --red:#f43f5e;
-  /* muted steel-blue: secondary/AI accent (kept deliberately quiet, not violet) */
-  --violet:#5b7a99; --violet2:#3f5c78;
-  /* warm gold: the one accent that gets to be loud (name, CTA, stat highlights) */
-  --accent:#d4a843; --accent-deep:#b5872f;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-::selection{background:rgba(91,122,153,.4)}
-:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px}
-::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--faint);border-radius:4px}
-
-/* ---------- scroll progress ---------- */
-#progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--accent),var(--green));z-index:1000;transition:width .1s linear}
-
-/* ---------- topbar ---------- */
-.topbar{position:sticky;top:0;z-index:900;height:58px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 clamp(16px,4vw,40px);background:rgba(9,11,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px}
-.brand .mark{width:28px;height:28px;border:1px solid var(--violet);border-radius:7px;display:grid;place-items:center;
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--violet);background:rgba(91,122,153,.1)}
-.status-chip{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);
-  border:1px solid rgba(34,211,160,.25);background:rgba(34,211,160,.06);border-radius:6px;padding:4px 10px;letter-spacing:.05em}
-.pulse{position:relative;width:11px;height:11px;flex-shrink:0}
-.pulse::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--green);opacity:.35;animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
-.pulse::after{content:"";position:absolute;inset:1.5px;border-radius:50%;background:var(--green)}
-@keyframes ping{75%,100%{transform:scale(2.4);opacity:0}}
-nav{display:flex;align-items:center;gap:4px}
-nav a{font-size:12.5px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:8px;border:1px solid transparent;transition:.18s}
-nav a:hover{color:var(--text)}
-nav a.active{color:var(--text);background:var(--surface);border-color:var(--border)}
-.btn{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
-  padding:9px 18px;border-radius:8px;border:1px solid var(--border);color:var(--muted);transition:.18s;cursor:pointer;background:transparent;letter-spacing:.03em}
-.btn:hover{color:var(--text);border-color:var(--dim)}
-.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-deep));border:none;color:#14100a;font-weight:700}
-.btn.primary:hover{filter:brightness(1.1)}
-.btn.ghost-green{color:var(--green);border-color:rgba(34,211,160,.3)}
-.btn.ghost-green:hover{background:rgba(34,211,160,.07)}
-.btn.live-cta{background:linear-gradient(135deg,var(--green),#16b88a);border:none;color:#04130d;font-weight:600;
-  animation:ctaPulse 1.6s ease-in-out infinite;position:relative}
-.btn.live-cta:hover{color:#04130d;filter:brightness(1.1);transform:translateY(-1px)}
-@keyframes ctaPulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(34,211,160,.5)}
-  50%{box-shadow:0 0 14px 3px rgba(34,211,160,.45)}}
-@media(prefers-reduced-motion:reduce){.btn.live-cta{animation:none}}
-@media(max-width:880px){nav{display:none}}
-
-/* ---------- layout ---------- */
-.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(18px,4.5vw,40px)}
-section{padding:clamp(64px,9vw,110px) 0;border-bottom:1px solid var(--border)}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.eyebrow::before{content:"";width:22px;height:1px;background:var(--accent)}
-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:18px}
-.lede{color:var(--muted);max-width:640px;font-size:15.5px}
-
-/* ---------- reveal ---------- */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
-.reveal.in{opacity:1;transform:none}
-
-/* ---------- hero (floating constellation) ---------- */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;
-  padding:clamp(80px,12vh,120px) 18px clamp(70px,10vh,110px);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.hero-inner{position:relative;z-index:3;max-width:880px;width:100%}
-.hero .eyebrow{color:var(--accent);justify-content:center}
-.hero .eyebrow::before{display:none}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,10vw,108px);font-weight:600;letter-spacing:-.01em;line-height:1;margin-bottom:14px}
-.hero h1 .accent{color:var(--accent)}
-.typed-line{font-family:'JetBrains Mono',monospace;font-size:clamp(12.5px,1.7vw,15px);color:var(--green);min-height:1.7em;margin-bottom:26px}
-.typed-line .prompt{color:var(--dim)}
-.cursor{display:inline-block;width:8px;height:1.05em;background:var(--green);vertical-align:text-bottom;margin-left:2px;animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-
-/* hero badges */
-.hero-badges{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
-.hbadge{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);border:1px solid var(--border);
-  background:var(--surface);border-radius:6px;padding:5px 12px;letter-spacing:.02em}
-.hbadge.live{color:var(--green);border-color:rgba(34,211,160,.4);display:inline-flex;align-items:center;gap:8px}
-.hbadge.live::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 0 0 rgba(34,211,160,.6);animation:livedot 1.5s ease-out infinite}
-@keyframes livedot{0%{box-shadow:0 0 0 0 rgba(34,211,160,.55)}70%{box-shadow:0 0 0 8px rgba(34,211,160,0)}100%{box-shadow:0 0 0 0 rgba(34,211,160,0)}}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-
-/* fabric sheet under the constellation */
-.fabric{position:absolute;inset:-60px;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(212,168,67,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(212,168,67,.045) 1px,transparent 1px),
-    linear-gradient(rgba(91,122,153,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(91,122,153,.04) 1px,transparent 1px);
-  background-size:72px 72px,72px 72px,18px 18px,18px 18px;
-  -webkit-mask-image:radial-gradient(ellipse 78% 66% at 50% 46%,#000 32%,transparent 82%);
-  mask-image:radial-gradient(ellipse 78% 66% at 50% 46%,#000 32%,transparent 82%);
-  animation:fabric 20s ease-in-out infinite;transform-origin:center}
-@keyframes fabric{
-  0%,100%{transform:perspective(900px) rotateX(.5deg) rotateY(-.4deg) translateY(0)}
-  25%{transform:perspective(900px) rotateX(-.5deg) rotateY(.5deg) translateY(-6px)}
-  50%{transform:perspective(900px) rotateX(.4deg) rotateY(.5deg) translateY(5px)}
-  75%{transform:perspective(900px) rotateX(-.5deg) rotateY(-.4deg) translateY(-4px)}}
-
-/* constellation svg */
-.constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.constellation .node-text{font-family:'JetBrains Mono',monospace;font-size:10.5px;opacity:.5}
-.constellation .node-text.de{fill:var(--accent)}
-.constellation .node-text.ai{fill:var(--violet);opacity:.55}
-.constellation .node-text.fs{fill:var(--green);opacity:.5}
-.constellation .node-dot{r:2}
-.constellation .node-dot.de{fill:var(--accent);opacity:.85}
-.constellation .node-dot.ai{fill:var(--violet);opacity:.8}
-.constellation .node-dot.fs{fill:var(--green);opacity:.8}
-.constellation .node-line{stroke:var(--faint);stroke-width:.7;opacity:.5}
-.cluster{transform-origin:center}
-.cl1{animation:drift1 26s ease-in-out infinite}.cl2{animation:drift2 31s ease-in-out infinite}
-.cl3{animation:drift3 28s ease-in-out infinite}.cl4{animation:drift4 34s ease-in-out infinite}
-.cl5{animation:drift2 30s ease-in-out infinite reverse}.cl6{animation:drift1 27s ease-in-out infinite reverse}
-.cl7{animation:drift3 38s ease-in-out infinite}.cl8{animation:drift4 32s ease-in-out infinite reverse}
-.cl9{animation:drift2 27s ease-in-out infinite}.cl10{animation:drift1 33s ease-in-out infinite reverse}
-@keyframes drift1{0%,100%{transform:translate(0,0)}33%{transform:translate(24px,-16px)}66%{transform:translate(-14px,20px)}}
-@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-24px,14px)}}
-@keyframes drift3{0%,100%{transform:translate(0,0)}25%{transform:translate(18px,16px)}75%{transform:translate(-16px,-14px)}}
-@keyframes drift4{0%,100%{transform:translate(0,0)}40%{transform:translate(-20px,-12px)}80%{transform:translate(14px,20px)}}
-/* each node bobs AND breathes in/out of view on its own cycle, so the field
-   is always partially fading — some keywords settling in as others recede,
-   rather than one fixed static cast of characters */
-.constellation .bob{animation:bob 6s ease-in-out infinite,twinkle 15s ease-in-out infinite}
-.constellation .bob:nth-of-type(2n){animation-duration:7.5s,19s;animation-delay:-2s,-4s}
-.constellation .bob:nth-of-type(3n){animation-duration:8.5s,22s;animation-delay:-4s,-9s}
-.constellation .bob:nth-of-type(4n){animation-duration:6.8s,17s;animation-delay:-3s,-2s}
-.constellation .bob:nth-of-type(5n){animation-duration:9.5s,25s;animation-delay:-1s,-14s}
-.constellation .bob:nth-of-type(7n){animation-duration:7.2s,20s;animation-delay:-5s,-6s}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes twinkle{0%,100%{opacity:0}12%{opacity:1}55%{opacity:1}72%{opacity:0}}
-/* soft fade at hero bottom so gold hero melts into the violet/green body */
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;z-index:2;pointer-events:none;
-  background:linear-gradient(to bottom,transparent,var(--bg))}
-@media(prefers-reduced-motion:reduce){.fabric,.cluster,.constellation .bob{animation:none!important}}
-
-/* ---------- about ---------- */
-.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(28px,5vw,64px);align-items:start}
-@media(max-width:880px){.about-grid{grid-template-columns:1fr}}
-.about-grid p{color:var(--muted);font-size:15.5px;margin-bottom:16px}
-.about-grid p strong{color:var(--text);font-weight:600}
-.sys-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2}
-.sys-card .row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dashed var(--faint);padding:3px 0}
-.sys-card .row:last-child{border-bottom:none}
-.sys-card .k{color:var(--dim)}
-.sys-card .ok{color:var(--green)}
-.sys-card .vi{color:var(--violet)}
-.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:34px;padding-top:30px;border-top:1px solid var(--border)}
-@media(max-width:640px){.about-stats{grid-template-columns:repeat(2,1fr)}}
-.about-stats div{display:flex;flex-direction:column;gap:2px}
-.about-stats b{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:var(--accent);line-height:1}
-.about-stats span{font-size:12.5px;color:var(--muted)}
-
-/* ---------- skills ---------- */
-.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:980px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.skills-grid{grid-template-columns:1fr}}
-.skill{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;border-left:3px solid var(--faint);transition:.2s}
-.skill:hover{border-left-color:var(--violet);transform:translateY(-3px)}
-.skill .cat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin-bottom:8px}
-.skill h3{font-family:'Space Grotesk',sans-serif;font-size:16.5px;font-weight:600;margin-bottom:12px}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:3px 9px}
-
-/* ---------- experience ---------- */
-.xp{display:flex;flex-direction:column;gap:14px}
-.xp-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 26px;border-left:3px solid var(--faint);transition:.2s}
-.xp-item.current{border-left-color:var(--green)}
-.xp-item:hover{transform:translateX(4px)}
-.xp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:nowrap;margin-bottom:8px}
-.xp-head>div:first-child{flex:1 1 auto;min-width:0}
-.xp-head h3{font-family:'Space Grotesk',sans-serif;font-size:17.5px;font-weight:600}
-.xp-head .org{color:var(--violet);font-size:13.5px;font-weight:500;margin-top:2px}
-.badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:3px 10px;white-space:nowrap;flex-shrink:0;margin-left:auto;align-self:flex-start}
-@media(max-width:560px){.xp-head{flex-wrap:wrap}.xp-head .badge{margin-left:0}}
-.badge.run{color:var(--green);background:rgba(34,211,160,.08);border:1px solid rgba(34,211,160,.3)}
-.badge.done{color:var(--dim);background:var(--surface2);border:1px solid var(--border)}
-.xp-item p{color:var(--muted);font-size:14px;margin-bottom:10px}
-.xp-stats{display:flex;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim)}
-.xp-stats b{color:var(--green);font-weight:600}
-
-/* ---------- projects ---------- */
-.proj-featured{background:var(--surface);border:1px solid rgba(212,168,67,.3);border-radius:14px;padding:clamp(24px,3.5vw,36px);
-  display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,44px);margin-bottom:16px;position:relative;overflow:hidden}
-.proj-featured::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--green))}
-@media(max-width:920px){.proj-featured{grid-template-columns:1fr}}
-.proj-status{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.proj-featured h3{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
-.proj-tagline{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--green);margin-bottom:14px}
-.proj-featured p{color:var(--muted);font-size:14.5px;margin-bottom:14px}
-.proj-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.term{background:#07090d;border:1px solid var(--border);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;overflow:hidden;align-self:start}
-.term-bar{display:flex;align-items:center;gap:6px;background:var(--surface2);border-bottom:1px solid var(--border);padding:9px 14px;color:var(--dim);font-size:11px}
-.term-bar .dot{width:11px;height:11px;border-radius:50%}
-.term-body{padding:16px 18px;line-height:1.9}
-.t-dim{color:var(--dim)} .t-green{color:var(--green)} .t-violet{color:var(--violet)} .t-amber{color:var(--amber)} .t-red{color:var(--red)} .t-text{color:var(--text)}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
-.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;border-left:3px solid var(--amber);transition:.2s}
-.proj-card:hover{transform:translateY(-3px);border-color:var(--dim)}
-.proj-card h3{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;margin:10px 0 4px}
-.proj-card .one{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);margin-bottom:10px}
-.proj-card p{color:var(--muted);font-size:13.5px;margin-bottom:14px}
-.badge.dev{color:var(--amber);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.3)}
-
-/* ---------- contact ---------- */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,60px);align-items:center}
-@media(max-width:820px){.contact-grid{grid-template-columns:1fr}}
-.contact-links{display:flex;flex-direction:column;gap:10px}
-.clink{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:15px 20px;transition:.18s;font-size:14px}
-.clink:hover{border-color:var(--violet);transform:translateX(4px)}
-.clink .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.clink .val{color:var(--text);font-weight:500}
-footer{padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-  font-size:12px;color:var(--faint)}
-footer .vi{color:var(--violet)}
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--green);
-  color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:8px;padding:10px 20px;transition:.3s;z-index:1001;opacity:0}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-
-/* ---------- video lightbox ---------- */
-.btn.watch{color:var(--accent);border-color:rgba(212,168,67,.4)}
-.btn.watch:hover{color:var(--accent);background:rgba(212,168,67,.08);border-color:var(--accent)}
-.lightbox{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,48px);
-  background:rgba(5,7,10,.82);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .28s ease}
-.lightbox.open{opacity:1;pointer-events:auto}
-.lightbox-inner{position:relative;width:min(1100px,100%);max-height:90vh;background:#07090d;border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:scale(.96);transition:transform .28s cubic-bezier(.22,1,.36,1)}
-.lightbox.open .lightbox-inner{transform:scale(1)}
-.lightbox-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);
-  background:var(--surface2);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
-.lightbox-bar .lb-title{display:flex;align-items:center;gap:9px}
-.lightbox-bar .lb-title .dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
-.lightbox-close{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;width:30px;height:30px;
-  font-size:16px;cursor:pointer;transition:.15s;line-height:1;display:grid;place-items:center}
-.lightbox-close:hover{color:var(--text);border-color:var(--dim)}
-.lightbox video{display:block;width:100%;max-height:calc(90vh - 46px);background:#000}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firezer Demese | SQL Server DBA</title>
+  <meta name="description" content="Senior SQL Server DBA in Houston, TX. 150+ production instances, a 6TB primary, 2.5M transactions a day. Building AI tooling on top of live database telemetry." />
+  <meta property="og:title" content="Firezer Demese | SQL Server DBA">
+  <meta property="og:description" content="Senior SQL Server DBA building AI tooling on top of live database telemetry. Houston, TX.">
+  <meta property="og:url" content="https://firezerdemese.github.io">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="progress"></div>
+<div id="scroll-bar"></div>
 
-<header class="topbar">
-  <div class="brand">
-    <span class="mark">FD</span>
-    <span>Firezer Demese</span>
-    <span class="status-chip"><span class="pulse"></span>OPEN TO ROLES</span>
-  </div>
-  <nav id="nav">
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#experience">Experience</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <a class="btn" href="./Resume.pdf" download>↓ RESUME</a>
-</header>
-
-<!-- ============ HERO ============ -->
-<div class="hero">
-  <div class="fabric" aria-hidden="true"></div>
-  <svg class="constellation" id="constellation" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-  <div class="hero-inner">
-    <div class="eyebrow">DATABASE ADMINISTRATOR · DATA &amp; AI TOOLING · FULL STACK</div>
-    <h1>Firezer <span class="accent">Demese</span></h1>
-    <div class="typed-line"><span class="prompt">$ </span><span id="typed"></span><span class="cursor"></span></div>
-    <div class="hero-badges">
-      <span class="hbadge">Houston, TX</span>
-      <span class="hbadge">SQL Server · Automation · Tuning</span>
-      <span class="hbadge live">3 AI products live</span>
-      <span class="hbadge">Open to roles</span>
-    </div>
-    <div class="hero-ctas">
-      <a class="btn primary" href="#projects">VIEW PROJECTS →</a>
-      <a class="btn ghost-green" href="https://github.com/Firezerdemese" target="_blank" rel="noopener">⌘ GITHUB</a>
-      <a class="btn" href="https://linkedin.com/in/firezer-demese-dba" target="_blank" rel="noopener">in LINKEDIN</a>
-    </div>
+<div id="loader">
+  <div class="loader-content">
+    <div class="loader-logo">FD</div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
   </div>
 </div>
 
-<!-- ============ ABOUT ============ -->
-<section id="about">
-  <div class="wrap reveal">
-    <div class="eyebrow">ABOUT</div>
-    <h2>Database depth. AI fluency. Production discipline.</h2>
-    <div class="about-grid">
-      <div>
-        <p>I'm a Senior SQL Server DBA with <strong>7+ years</strong> in enterprise production, currently managing <strong>150+ SQL Server instances</strong> at TransCore, with databases up to 6TB pushing 2.5 million transactions a day. Before that: regulated financial services at <strong>Bank of America</strong> and energy-sector data at <strong>Shell</strong>.</p>
-        <p>The work I care about now sits at the intersection of databases and AI: tools like <strong>SQLGuardian</strong>, where an LLM reads live DMV telemetry and explains blocking chains, generates remediation T-SQL, and answers natural-language questions about server health, grounded in real data, not guesses.</p>
-        <p>I build systems that are reliable, observable, and honest under pressure. Not just code that runs, but infrastructure that holds.</p>
-      </div>
-      <div class="sys-card" aria-label="profile summary">
-        <div class="row"><span class="k">role</span><span class="t-text">Senior SQL Server DBA</span></div>
-        <div class="row"><span class="k">location</span><span class="t-text">Houston, TX · Remote</span></div>
-        <div class="row"><span class="k">stack</span><span class="vi">SQL Server · Azure · Python</span></div>
-        <div class="row"><span class="k">ai_layer</span><span class="vi">LLM tooling · eval harnesses</span></div>
-        <div class="row"><span class="k">cert</span><span class="t-text">DP-300 (in progress)</span></div>
-        <div class="row"><span class="k">status</span><span class="ok">● open_to_roles = true</span></div>
-      </div>
-    </div>
-    <div class="about-stats">
-      <div><b>7+</b><span>years SQL &amp; databases</span></div>
-      <div><b>150+</b><span>production instances</span></div>
-      <div><b>3</b><span>AI products live</span></div>
-      <div><b>3</b><span>domains: DBA · AI · full stack</span></div>
-    </div>
-  </div>
-</section>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">FD</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+</nav>
 
-<!-- ============ SKILLS ============ -->
-<section id="skills">
-  <div class="wrap reveal">
-    <div class="eyebrow">SKILLS</div>
-    <h2>Technical arsenal</h2>
-    <div class="skills-grid">
-      <div class="skill">
-        <div class="cat">Database Engineering</div>
-        <h3>SQL Server at scale</h3>
-        <div class="tags"><span class="tag">T-SQL</span><span class="tag">Query Tuning</span><span class="tag">Index Design</span><span class="tag">Always On AG</span><span class="tag">DMVs</span><span class="tag">Execution Plans</span></div>
-      </div>
-      <div class="skill">
-        <div class="cat">Operations</div>
-        <h3>Production reliability</h3>
-        <div class="tags"><span class="tag">HA / DR</span><span class="tag">Backups & Recovery</span><span class="tag">Monitoring</span><span class="tag">Blocking Analysis</span><span class="tag">SQL Agent</span><span class="tag">Capacity Planning</span></div>
-      </div>
-      <div class="skill">
-        <div class="cat">Cloud</div>
-        <h3>Azure data platform</h3>
-        <div class="tags"><span class="tag">Azure Virtual Machine</span><span class="tag">Azure SQL DB</span><span class="tag">Managed PostgreSQL</span><span class="tag">Managed Instance</span><span class="tag">Migrations</span></div>
-      </div>
-      <div class="skill">
-        <div class="cat">AI & LLM</div>
-        <h3>AI-powered data tooling</h3>
-        <div class="tags"><span class="tag">LLM APIs</span><span class="tag">Prompt Engineering</span><span class="tag">Grounded Generation</span><span class="tag">SQL Eval</span><span class="tag">Groq / OpenAI / Anthropic</span></div>
-      </div>
-      <div class="skill">
-        <div class="cat">Backend</div>
-        <h3>APIs & pipelines</h3>
-        <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQLAlchemy</span><span class="tag">ETL</span><span class="tag">PowerShell</span><span class="tag">REST</span></div>
-      </div>
-      <div class="skill">
-        <div class="cat">DevOps</div>
-        <h3>Ship & operate</h3>
-        <div class="tags"><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">CI/CD</span><span class="tag">Linux</span><span class="tag">Bash</span></div>
-      </div>
+<!-- HERO -->
+<section id="hero" class="hero">
+  <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-center">
+    <div class="hero-eyebrow">SQL Server DBA &middot; Data &amp; AI Tooling</div>
+    <h1 class="hero-name">Firezer <span class="gold">Demese</span></h1>
+    <div class="hero-typewriter"><span class="tw-prompt">$</span> <span id="twText"></span><span class="tw-cursor"></span></div>
+    <div class="hero-badge-row">
+      <span class="hero-badge-pill">Houston, TX</span>
+      <span class="hero-badge-pill">7+ years on SQL Server</span>
+      <span class="hero-badge-pill">DP-300 in progress</span>
+      <span class="hero-badge-pill">Open to roles</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View My Work</a>
+      <a href="https://github.com/Firezerdemese" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
+      <a href="Resume.pdf" download class="btn-ghost">Download Resume</a>
     </div>
   </div>
 </section>
 
-<!-- ============ EXPERIENCE ============ -->
-<section id="experience">
-  <div class="wrap reveal">
-    <div class="eyebrow">EXPERIENCE</div>
-    <h2>Work history</h2>
-    <div class="xp">
-      <div class="xp-item current">
-        <div class="xp-head">
-          <div><h3>Senior SQL Server DBA</h3><div class="org">TransCore · Remote</div></div>
-          <span class="badge run">● Running · Jan 2023 - Present</span>
-        </div>
-        <p>Own database reliability for a national tolling platform. Performance tuning, HA/DR, automation, and incident response across a large production estate.</p>
-        <div class="xp-stats"><span><b>150+</b> instances</span><span><b>6TB</b> largest DB</span><span><b>2.5M</b> txns/day</span><span><b>100%</b> remote</span></div>
-      </div>
-      <div class="xp-item">
-        <div class="xp-head">
-          <div><h3>SQL Server DBA</h3><div class="org">Bank of America</div></div>
-          <span class="badge done">Completed · Jun 2020 - Dec 2022</span>
-        </div>
-        <p>Database administration in a regulated financial-services environment: audited backups, security hardening, change control, and performance work under SOX scrutiny.</p>
-        <div class="xp-stats"><span><b>Security</b> hardening</span><span><b>Audit</b> documentation</span><span><b>24/7</b> on-call rotation</span></div>
-      </div>
-      <div class="xp-item">
-        <div class="xp-head">
-          <div><h3>Database Administrator</h3><div class="org">Shell · Houston, TX</div></div>
-          <span class="badge done">Completed · Feb 2019 - May 2020</span>
-        </div>
-        <p>Supported energy-sector data workloads: query optimization, schema design, ETL support, and maintenance automation for operational reporting databases.</p>
-        <div class="xp-stats"><span><b>60%</b> query-runtime reduction</span><span><b>ETL</b> pipeline support</span></div>
-      </div>
+<!-- ABOUT -->
+<section id="about" class="section about">
+  <div class="section-label">01 / About</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>SQL Server DBA <span class="gold">who builds the tooling I wanted on call.</span></h2>
+      <p>I run production SQL Server for a national tolling platform at TransCore: 150+ instances, a 6TB primary, and roughly 2.5 million transactions a day. Day to day that means tuning queries against real execution plans, keeping Always On availability groups healthy, automating the maintenance that shouldn't need a person, and picking up the phone when something breaks at 2am.</p>
+      <p>Before TransCore I did the same work under bank audit rules at Bank of America, and on energy reporting data at Shell. Different industries, same job: keep the data correct and the server up.</p>
+      <p>For the last two years I've been building tools on top of that experience. SQLGuardian reads live DMV output and explains a blocking chain the way I would explain it to a junior DBA. FlowLens holds an ETL batch in staging until its row counts reconcile. QueryLens grades SQL, including SQL a model wrote. All three run against real SQL Server and Postgres instances.</p>
+    </div>
+
+    <div class="sys-card" aria-label="Profile summary">
+      <div class="sys-row"><span class="sys-k">role</span><span class="sys-v">Senior SQL Server DBA</span></div>
+      <div class="sys-row"><span class="sys-k">location</span><span class="sys-v">Houston, TX &middot; Remote</span></div>
+      <div class="sys-row"><span class="sys-k">core</span><span class="sys-v">SQL Server &middot; Always On &middot; Azure</span></div>
+      <div class="sys-row"><span class="sys-k">building</span><span class="sys-v">Python &middot; FastAPI &middot; LLM tooling</span></div>
+      <div class="sys-row"><span class="sys-k">cert</span><span class="sys-v">DP-300 (in progress)</span></div>
+      <div class="sys-row"><span class="sys-k">status</span><span class="sys-v ok">open to roles</span></div>
+    </div>
+  </div>
+
+  <div class="about-stats">
+    <div class="stat">
+      <span class="stat-num gold">7+</span>
+      <span class="stat-label">Years on SQL Server</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num gold">150+</span>
+      <span class="stat-label">Production Instances</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num gold">6TB</span>
+      <span class="stat-label">Largest Database</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num gold">2.5M</span>
+      <span class="stat-label">Transactions Per Day</span>
     </div>
   </div>
 </section>
 
-<!-- ============ PROJECTS ============ -->
-<section id="projects">
-  <div class="wrap reveal">
-    <div class="eyebrow">PROJECTS</div>
-    <h2>Things I've built</h2>
-    <p class="lede" style="margin-bottom:30px">Real tools, real data, real AI, built on the production patterns I use every day.</p>
+<!-- SKILLS -->
+<section id="skills" class="section skills">
+  <div class="section-label">02 / Skills</div>
+  <h2>What I <span class="gold">work with</span></h2>
 
-    <!-- FEATURED: SQLGuardian -->
-    <article class="proj-featured">
-      <div>
-        <div class="proj-status">
-          <span class="status-chip"><span class="pulse"></span>LIVE</span>
-          <span class="badge done">v1.0</span>
-        </div>
-        <h3>SQLGuardian</h3>
-        <div class="proj-tagline">Ask the AI why your server is slow. Get a T-SQL fix back in seconds.</div>
-        <p>AI-powered SQL Server health monitoring platform. Runs 7 DMV-based checks every 60 seconds (blocking chains, wait stats, agent jobs, disk, backups) and feeds live telemetry to an LLM that explains incidents in plain English, generates remediation T-SQL, and answers natural-language questions grounded in real server data.</p>
-        <p>Detects live blocking with head-blocker session IDs and locked SQL. The AI names the blocker, weighs the safe options, and explains the trade-offs before anything destructive. Dual-audience output: a technical DBA view and a one-paragraph management summary from the same snapshot.</p>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQL Server 2022</span><span class="tag">React</span><span class="tag">Docker</span><span class="tag">Groq · Llama 3.3-70b</span><span class="tag">DMVs</span>
-        </div>
-        <div class="proj-links">
-          <a class="btn live-cta" href="./sqlguardian-demo/" target="_blank" rel="noopener">👉 LIVE DASHBOARD · CLICK ME</a>
-          <button class="btn watch" type="button" data-video="./assets/sqlguardian-demo.mp4" data-video-title="sqlguardian · demo walkthrough">▶ WATCH DEMO</button>
-          <a class="btn primary" href="https://github.com/Firezerdemese/sqlguardian" target="_blank" rel="noopener">⌘ GITHUB</a>
-        </div>
-      </div>
-      <div class="term" aria-hidden="true">
-        <div class="term-bar">
-          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
-          <span style="margin-left:8px">sqlguardian · ai brain</span>
-        </div>
-        <div class="term-body">
-          <div><span class="t-dim">$</span> <span class="t-text">ask "why is my server slow?"</span></div>
-          <div class="t-dim">→ reading sys.dm_os_wait_stats…</div>
-          <div class="t-dim">→ reading sys.dm_exec_requests…</div>
-          <div>&nbsp;</div>
-          <div><span class="t-red">● BLOCKING DETECTED</span></div>
-          <div class="t-text">Session 52 is the head blocker,</div>
-          <div class="t-text">holding an IX lock on Sales.Orders</div>
-          <div class="t-text">for 120s, blocking 5 sessions.</div>
-          <div>&nbsp;</div>
-          <div><span class="t-violet">▸ recommended actions</span></div>
-          <div><span class="t-green">1. ask session 52's owner to</span></div>
-          <div><span class="t-green">&nbsp;&nbsp; commit or roll back the txn</span></div>
-          <div><span class="t-green">2. for blocked reads, suggest</span></div>
-          <div><span class="t-green">&nbsp;&nbsp; READ UNCOMMITTED (dirty read)</span></div>
-          <div><span class="t-amber">3. KILL 52 only as last resort</span></div>
-          <div><span class="t-amber">risk: medium · approval: required</span></div>
-        </div>
-      </div>
-    </article>
-
-    <!-- FEATURED: QueryLens (live) -->
-    <article class="proj-featured" style="margin-top:16px">
-      <div>
-        <div class="proj-status">
-          <span class="status-chip"><span class="pulse"></span>LIVE</span>
-        </div>
-        <h3>QueryLens</h3>
-        <div class="proj-tagline">Ask in English, audit any query, and grade the LLMs that write SQL.</div>
-        <p>A SQL workbench with a read-only safety boundary, built on the DBA instinct that nothing should ever touch production without guardrails. Three pillars: <strong>Ask</strong> turns natural language into SQL and runs it live; <strong>Analyze</strong> scans a query for anti-patterns (SELECT *, leading-wildcard LIKE, missing filters), scores it, and rewrites it; <strong>Evaluate</strong> benchmarks LLM-generated SQL against gold answers.</p>
-        <p>Every statement passes through a sandbox that rejects writes, DROPs, and multi-statement input before it reaches the database. The eval and rewrite work is grounded in real query plans, not vibes.</p>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">React</span><span class="tag">LLM APIs</span><span class="tag">Docker</span>
-        </div>
-        <div class="proj-links">
-          <a class="btn live-cta" href="https://querylens-cudj.onrender.com/" target="_blank" rel="noopener">👉 LIVE DEMO · CLICK ME</a>
-          <a class="btn primary" href="https://github.com/Firezerdemese/querylens" target="_blank" rel="noopener">⌘ GITHUB</a>
-        </div>
-      </div>
-      <div class="term" aria-hidden="true" style="background:rgba(212,168,67,.03)">
-        <div class="term-bar">
-          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
-          <span style="margin-left:8px">querylens · analyze</span>
-        </div>
-        <div class="term-body" style="line-height:1.7">
-          <div><span class="t-dim">$</span> <span class="t-text">analyze "SELECT * FROM Orders</span></div>
-          <div><span class="t-text">&nbsp;&nbsp; WHERE notes LIKE '%late%'"</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-red">● 2 findings</span></div>
-          <div class="t-amber">• SELECT * - column bloat</div>
-          <div class="t-amber">• leading-wildcard LIKE - no seek</div>
-          <div>&nbsp;</div>
-          <div><span class="t-dim">grade:</span> <span class="t-amber">C</span> <span class="t-dim">· score 62/100</span></div>
-          <div><span class="t-violet">▸ rewrite suggested</span></div>
-          <div class="t-green">project columns + full-text index</div>
-        </div>
-      </div>
-    </article>
-
-    <!-- FEATURED: FlowLens (live) -->
-    <article class="proj-featured" style="margin-top:16px">
-      <div>
-        <div class="proj-status">
-          <span class="status-chip"><span class="pulse"></span>LIVE</span>
-        </div>
-        <h3>FlowLens</h3>
-        <div class="proj-tagline">The pipeline said "Succeeded." It still dropped a third of your rows.</div>
-        <p>An AI-native <strong>data reliability platform</strong> for SQL Server ETL. A stored proc can finish with zero errors, log <em>Succeeded</em>, and silently drop 38% of its rows to one bad JOIN. FlowLens sits between staging and production as a <strong>Write-Audit-Publish</strong> gate and refuses to publish a batch until it clears data contracts, source-vs-target reconciliation, and an IsolationForest anomaly check.</p>
-        <p>The design line I care about: <strong>the AI never decides pass/fail.</strong> Every verdict is deterministic SQL and statistics — the LLM only writes the plain-English incident report, grounded in the exact evidence the gate collected. An AI that can't hallucinate a "pass" is one you can put in front of production.</p>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQL Server 2022</span><span class="tag">scikit-learn</span><span class="tag">Groq · Llama 3.3-70b</span><span class="tag">Data Contracts</span>
-        </div>
-        <div class="proj-links">
-          <a class="btn live-cta" href="./flowlens-demo/" target="_blank" rel="noopener">👉 LIVE DEMO · CLICK ME</a>
-          <a class="btn primary" href="https://github.com/Firezerdemese/flowlens" target="_blank" rel="noopener">⌘ GITHUB</a>
-        </div>
-      </div>
-      <div class="term" aria-hidden="true">
-        <div class="term-bar">
-          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
-          <span style="margin-left:8px">flowlens · audit gate</span>
-        </div>
-        <div class="term-body" style="line-height:1.7">
-          <div><span class="t-dim">$</span> <span class="t-text">run bad batch D20260707</span></div>
-          <div class="t-dim">→ write 48,004 rows to staging</div>
-          <div class="t-dim">→ audit: contracts · recon · anomaly</div>
-          <div>&nbsp;</div>
-          <div><span class="t-red">● VERDICT: FAIL</span></div>
-          <div class="t-amber">• row_volume: 30,180 vs 48k ±15%</div>
-          <div class="t-amber">• recon diff 37.8% · 761 meters lost</div>
-          <div>&nbsp;</div>
-          <div><span class="t-green">✓ production untouched</span></div>
-          <div><span class="t-violet">▸ quarantined + AI incident report</span></div>
-        </div>
-      </div>
-    </article>
-
-    <!-- Upcoming -->
-    <div class="proj-grid" style="margin-top:16px">
-      <article class="proj-card">
-        <span class="badge dev">⚙ IN DEVELOPMENT</span>
-        <h3>AuditLens - DB Security &amp; Anomaly Detection</h3>
-        <div class="one">Audit evidence packs + AI anomaly detection for database access.</div>
-        <p>Generates SOX/HIPAA-mapped evidence packs, inventories role-based access and privilege creep, and flags unusual access patterns with statistical baselines plus an Isolation Forest model. Built from regulated-environment DBA work.</p>
-        <div class="tags"><span class="tag">Python</span><span class="tag">SQL Server</span><span class="tag">scikit-learn</span><span class="tag">RBAC</span><span class="tag">LLM narration</span></div>
-      </article>
-    </div>
+  <div class="skills-filter">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="db">Database</button>
+    <button class="filter-btn" data-filter="ai">AI &amp; Data Tooling</button>
+    <button class="filter-btn" data-filter="eng">Backend &amp; DevOps</button>
   </div>
-</section>
 
-<!-- ============ CONTACT ============ -->
-<section id="contact" style="border-bottom:none">
-  <div class="wrap reveal">
-    <div class="eyebrow">CONTACT</div>
-    <div class="contact-grid">
-      <div>
-        <h2>Let's connect.</h2>
-        <p class="lede">Open to roles in database administration, database engineering, database development, and AI-enabled infrastructure — remote or in Houston, and open to relocate. If you're planning to build something where databases meet AI, I'd love to hear about it. My contact is below — let's discuss how I can help.</p>
-        <div class="hero-ctas" style="margin-top:24px">
-          <a class="btn primary" href="mailto:firezer.demese@gmail.com">✉ EMAIL ME</a>
-          <a class="btn" href="tel:+13468717474">☎ +1 346 871 7474</a>
-          <a class="btn" href="./Resume.pdf" download>↓ RESUME</a>
-        </div>
+  <div class="skills-grid">
+    <div class="skill-card" data-domain="db">
+      <div class="skill-card-header"><span class="skill-domain-tag db">Database</span></div>
+      <h3>SQL Server</h3>
+      <div class="tags">
+        <span>T-SQL</span><span>Query Tuning</span><span>Index Design</span>
+        <span>Execution Plans</span><span>DMVs</span><span>Extended Events</span>
       </div>
-      <div class="contact-links">
-        <button class="clink" id="copyEmail" type="button">
-          <span class="lab">EMAIL</span><span class="val">firezer.demese@gmail.com</span>
-        </button>
-        <a class="clink" href="tel:+13468717474">
-          <span class="lab">PHONE</span><span class="val">+1 346 871 7474</span>
-        </a>
-        <a class="clink" href="https://github.com/Firezerdemese" target="_blank" rel="noopener">
-          <span class="lab">GITHUB</span><span class="val">github.com/Firezerdemese</span>
-        </a>
-        <a class="clink" href="https://linkedin.com/in/firezer-demese-dba" target="_blank" rel="noopener">
-          <span class="lab">LINKEDIN</span><span class="val">in/firezer-demese-dba</span>
-        </a>
+    </div>
+
+    <div class="skill-card" data-domain="db">
+      <div class="skill-card-header"><span class="skill-domain-tag db">Database</span></div>
+      <h3>High Availability &amp; Recovery</h3>
+      <div class="tags">
+        <span>Always On AG</span><span>Log Shipping</span><span>Backup &amp; Restore</span>
+        <span>DR Drills</span><span>Failover Testing</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="db">
+      <div class="skill-card-header"><span class="skill-domain-tag db">Database</span></div>
+      <h3>Production Operations</h3>
+      <div class="tags">
+        <span>SQL Agent</span><span>Monitoring</span><span>Blocking Analysis</span>
+        <span>Capacity Planning</span><span>Patching</span><span>On-Call</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="db">
+      <div class="skill-card-header"><span class="skill-domain-tag db">Database</span></div>
+      <h3>Azure Data Platform</h3>
+      <div class="tags">
+        <span>Azure SQL Database</span><span>Managed Instance</span><span>SQL on Azure VM</span>
+        <span>Azure DB for PostgreSQL</span><span>Migrations</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="ai">
+      <div class="skill-card-header"><span class="skill-domain-tag ai">AI Tooling</span></div>
+      <h3>LLM Integration</h3>
+      <div class="tags">
+        <span>Groq</span><span>OpenAI API</span><span>Anthropic API</span>
+        <span>Prompt Design</span><span>Grounded Generation</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="ai">
+      <div class="skill-card-header"><span class="skill-domain-tag ai">AI Tooling</span></div>
+      <h3>Evaluation &amp; Data Quality</h3>
+      <div class="tags">
+        <span>SQL Eval Harnesses</span><span>Data Contracts</span><span>Reconciliation</span>
+        <span>scikit-learn</span><span>Anomaly Detection</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="eng">
+      <div class="skill-card-header"><span class="skill-domain-tag eng">Backend</span></div>
+      <h3>APIs &amp; Pipelines</h3>
+      <div class="tags">
+        <span>Python</span><span>FastAPI</span><span>SQLAlchemy</span>
+        <span>PowerShell</span><span>REST</span><span>ETL</span>
+      </div>
+    </div>
+
+    <div class="skill-card" data-domain="eng">
+      <div class="skill-card-header"><span class="skill-domain-tag eng">DevOps</span></div>
+      <h3>Ship &amp; Operate</h3>
+      <div class="tags">
+        <span>Docker</span><span>Git</span><span>CI/CD</span>
+        <span>Linux</span><span>Bash</span><span>React</span>
       </div>
     </div>
   </div>
 </section>
 
-<div class="wrap">
-  <footer>
-    <span>© 2026 <span class="vi">Firezer Demese</span> · DBA/DB Engineer</span>
-    <span>status: <span style="color:var(--green)">open to roles</span> · 3 products live</span>
-  </footer>
+<!-- EXPERIENCE -->
+<section id="experience" class="section experience">
+  <div class="section-label">03 / Experience</div>
+  <h2>Work <span class="gold">History</span></h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot current"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <h3>Senior SQL Server DBA</h3>
+          <span class="timeline-company">TransCore &middot; Remote</span>
+          <span class="timeline-date">Jan 2023 &ndash; Present</span>
+        </div>
+        <p>Own database reliability for a national tolling platform. Tune queries and indexes against real execution plans, run Always On availability groups and the DR drills that prove they work, automate maintenance with SQL Agent and PowerShell, and lead incident response when something goes wrong in production.</p>
+        <div class="xp-stats">
+          <span><b>150+</b> instances</span>
+          <span><b>6TB</b> largest database</span>
+          <span><b>2.5M</b> transactions/day</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <h3>SQL Server DBA</h3>
+          <span class="timeline-company">Bank of America</span>
+          <span class="timeline-date">Jun 2020 &ndash; Dec 2022</span>
+        </div>
+        <p>Ran databases under financial-services audit rules: verified backup and restore, hardened security and logins, pushed every change through formal approval gates, and tuned reporting workloads. Anything I touched had to be documented well enough to survive an audit months later.</p>
+        <div class="xp-stats">
+          <span><b>SOX</b> change control</span>
+          <span><b>24/7</b> on-call rotation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <h3>Database Administrator</h3>
+          <span class="timeline-company">Shell &middot; Houston, TX</span>
+          <span class="timeline-date">Feb 2019 &ndash; May 2020</span>
+        </div>
+        <p>Supported the operational reporting databases behind energy data. Schema design, ETL support, and maintenance automation, plus a long stretch of query optimization that cut runtime on the worst reporting queries by about 60% through index changes and rewritten joins.</p>
+        <div class="xp-stats">
+          <span><b>60%</b> query runtime reduction</span>
+          <span><b>ETL</b> pipeline support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section projects">
+  <div class="section-label">04 / Projects</div>
+  <h2>Things I've <span class="gold">Built</span></h2>
+  <p class="section-lede">Each one came out of a problem I hit on the job. All three of the live ones run against real databases.</p>
+
+  <div class="projects-list">
+
+    <!-- SQLGuardian -->
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-date">2025 &ndash; 2026</span>
+        <span class="project-status live">Live</span>
+        <span class="project-version">v1.0</span>
+      </div>
+      <div class="project-body">
+        <div class="project-info">
+          <h3 class="project-title">SQLGuardian</h3>
+          <p class="project-subtitle">AI-assisted SQL Server health monitoring</p>
+          <p class="project-desc">SQLGuardian runs seven DMV-based checks every 60 seconds (blocking chains, wait statistics, Agent job failures, disk space, backup age, log growth, and long-running requests) and hands the snapshot to an LLM that writes the explanation. When it catches blocking it names the head-blocker session, shows the statement holding the lock, and lists the options in order of risk, with KILL last. The same snapshot renders two ways: a technical view for the DBA, and a short summary for whoever is asking why the app feels slow.</p>
+          <div class="project-tags">
+            <span>Python</span><span>FastAPI</span><span>SQL Server 2022</span>
+            <span>React</span><span>Docker</span><span>Groq &middot; Llama 3.3 70b</span><span>DMVs</span>
+          </div>
+          <div class="project-links">
+            <a href="./sqlguardian-demo/" target="_blank" rel="noopener" class="link-btn primary">Live Dashboard</a>
+            <button type="button" class="link-btn video" data-video="./assets/sqlguardian-demo.mp4" data-video-title="SQLGuardian &middot; Demo Walkthrough">Demo Video</button>
+            <a href="https://github.com/Firezerdemese/sqlguardian" target="_blank" rel="noopener" class="link-btn">GitHub</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <img src="images/sqlguardian-diagram.svg" alt="SQLGuardian architecture: SQL Server DMVs feed a FastAPI collector, which sends snapshots to an LLM that produces a DBA view and a management summary.">
+        </div>
+      </div>
+    </div>
+
+    <!-- QueryLens -->
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-date">2025</span>
+        <span class="project-status live">Live</span>
+      </div>
+      <div class="project-body">
+        <div class="project-info">
+          <h3 class="project-title">QueryLens</h3>
+          <p class="project-subtitle">SQL workbench with a read-only boundary</p>
+          <p class="project-desc">Three things in one app. <strong>Ask</strong> turns a plain-English question into SQL and runs it. <strong>Analyze</strong> reads a query for the patterns that hurt at scale (SELECT *, leading-wildcard LIKE, a missing WHERE clause) and returns a score plus a rewrite. <strong>Evaluate</strong> runs model-generated SQL against gold answers and reports how often each model actually got the right rows back. Every statement passes through a parser that rejects writes, DDL, and multi-statement input before it reaches the database.</p>
+          <div class="project-tags">
+            <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
+            <span>React</span><span>LLM APIs</span><span>Docker</span>
+          </div>
+          <div class="project-links">
+            <a href="https://querylens-cudj.onrender.com/" target="_blank" rel="noopener" class="link-btn primary">Live Demo</a>
+            <a href="https://github.com/Firezerdemese/querylens" target="_blank" rel="noopener" class="link-btn">GitHub</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <img src="images/querylens-diagram.svg" alt="QueryLens architecture: Ask, Analyze and Evaluate all route through a safety parser before reaching a read-only PostgreSQL database.">
+        </div>
+      </div>
+    </div>
+
+    <!-- FlowLens -->
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-date">2026</span>
+        <span class="project-status live">Live</span>
+      </div>
+      <div class="project-body">
+        <div class="project-info">
+          <h3 class="project-title">FlowLens</h3>
+          <p class="project-subtitle">Write-audit-publish gate for SQL Server ETL</p>
+          <p class="project-desc">A stored procedure can finish with no errors, log <em>Succeeded</em>, and still lose a third of its rows to one bad join. FlowLens loads each batch into staging and holds it there until it clears three gates: the declared data contracts, a source-to-target reconciliation on row counts and key values, and an IsolationForest check against the batch history. The verdict is deterministic SQL and statistics. The LLM only writes the incident report, using the evidence the gate already collected, so it has no way to declare a bad batch clean.</p>
+          <div class="project-tags">
+            <span>Python</span><span>FastAPI</span><span>SQL Server 2022</span>
+            <span>scikit-learn</span><span>Groq &middot; Llama 3.3 70b</span><span>Data Contracts</span>
+          </div>
+          <div class="project-links">
+            <a href="./flowlens-demo/" target="_blank" rel="noopener" class="link-btn primary">Live Demo</a>
+            <a href="https://github.com/Firezerdemese/flowlens" target="_blank" rel="noopener" class="link-btn">GitHub</a>
+          </div>
+        </div>
+        <div class="project-visual">
+          <img src="images/flowlens-diagram.svg" alt="FlowLens architecture: a source batch lands in staging, passes an audit gate, and is either published to production or quarantined with an incident report.">
+        </div>
+      </div>
+    </div>
+
+    <!-- AuditLens -->
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-date">2026</span>
+        <span class="project-status dev">In Development</span>
+      </div>
+      <div class="project-body single">
+        <div class="project-info">
+          <h3 class="project-title">AuditLens</h3>
+          <p class="project-subtitle">Database access auditing and anomaly detection</p>
+          <p class="project-desc">Builds audit evidence packs mapped to SOX and HIPAA controls, inventories role membership and privilege creep across instances, and flags unusual access against a statistical baseline plus an Isolation Forest model. It came directly out of the evidence-gathering work I did every quarter at Bank of America.</p>
+          <div class="project-tags">
+            <span>Python</span><span>SQL Server</span><span>scikit-learn</span>
+            <span>RBAC</span><span>LLM Narration</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact">
+  <div class="section-label">05 / Contact</div>
+  <h2>Let's <span class="gold">Connect</span></h2>
+  <p class="contact-sub">Open to database administration, database engineering, and data platform roles. Remote, or in Houston, and happy to relocate for the right team.</p>
+
+  <a href="Resume.pdf" download class="btn-primary contact-resume">Download Resume</a>
+
+  <div class="contact-links">
+    <button type="button" class="contact-item" id="copyEmail">
+      <span class="contact-lab">Email</span>
+      <span class="contact-val">firezer.demese@gmail.com</span>
+    </button>
+    <a href="tel:+13468717474" class="contact-item">
+      <span class="contact-lab">Phone</span>
+      <span class="contact-val">+1 346 871 7474</span>
+    </a>
+    <a href="https://github.com/Firezerdemese" target="_blank" rel="noopener" class="contact-item">
+      <span class="contact-lab">GitHub</span>
+      <span class="contact-val">github.com/Firezerdemese</span>
+    </a>
+    <a href="https://linkedin.com/in/firezer-demese-dba" target="_blank" rel="noopener" class="contact-item">
+      <span class="contact-lab">LinkedIn</span>
+      <span class="contact-val">in/firezer-demese-dba</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Firezer Demese &middot; Built with GitHub Pages</p>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div id="video-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Demo Video</span>
+      <button class="modal-close" id="modal-close" aria-label="Close video">&times;</button>
+    </div>
+    <video id="modal-video" controls playsinline preload="none"></video>
+  </div>
 </div>
 
-<div class="toast" id="toast">email copied ✓</div>
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Back to top">&uarr;</button>
 
-<!-- video lightbox -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Project demo video">
-  <div class="lightbox-inner">
-    <div class="lightbox-bar">
-      <span class="lb-title"><span class="dot"></span><span id="lb-title-text">demo</span></span>
-      <button class="lightbox-close" id="lb-close" type="button" aria-label="Close video">✕</button>
-    </div>
-    <video id="lb-video" controls playsinline preload="none"></video>
-  </div>
+<!-- NAV DOTS -->
+<div class="nav-dots" id="navDots">
+  <button class="nav-dot active" data-target="hero"><span class="nav-dot-label">Home</span></button>
+  <button class="nav-dot" data-target="about"><span class="nav-dot-label">About</span></button>
+  <button class="nav-dot" data-target="skills"><span class="nav-dot-label">Skills</span></button>
+  <button class="nav-dot" data-target="experience"><span class="nav-dot-label">Experience</span></button>
+  <button class="nav-dot" data-target="projects"><span class="nav-dot-label">Projects</span></button>
+  <button class="nav-dot" data-target="contact"><span class="nav-dot-label">Contact</span></button>
 </div>
 
-<script>
-// floating constellation (project/skill words, color-coded by domain)
-(function(){
-  const svg = document.getElementById('constellation');
-  if (!svg) return;
-  const NS = 'http://www.w3.org/2000/svg';
-  // type: de=gold(data/db, recruiter-facing DBA terms), ai=muted slate-blue, fs=green(full stack)
-  const clusters = [
-    {nodes:[[80,90,'SQL Server','de'],[210,130,'T-SQL','de'],[140,220,'PostgreSQL','de'],[290,205,'DMVs','de']], lines:[[0,1],[1,2],[1,3]]},
-    {nodes:[[1270,100,'Azure','de'],[1410,140,'Azure VM','de'],[1340,230,'Perf Tuning','de'],[1480,250,'Docker','fs']], lines:[[0,1],[0,2],[1,3]]},
-    {nodes:[[60,420,'Python','de'],[200,460,'Airflow','de'],[100,540,'dbt','de'],[235,560,'ETL','de']], lines:[[0,1],[0,2],[1,3]]},
-    {nodes:[[1420,415,'Groq','ai'],[1285,470,'LLM Eval','ai'],[1380,560,'Llama 3.3','ai'],[1495,520,'Embeddings','ai']], lines:[[0,1],[1,2],[0,3]]},
-    {nodes:[[100,700,'FastAPI','fs'],[250,720,'SQLAlchemy','fs'],[170,810,'REST','fs']], lines:[[0,1],[0,2]]},
-    {nodes:[[1320,700,'React','fs'],[1455,720,'JavaScript','fs'],[1390,800,'Git','fs']], lines:[[0,1],[1,2]]},
-    {nodes:[[640,640,'OpenAI','ai'],[820,620,'Anthropic Claude','ai'],[660,770,'Copilot','ai'],[850,750,'Gemini','ai']], lines:[[0,1],[1,3],[1,2]]},
-    {nodes:[[470,165,'Prompt Eng','ai'],[1075,185,'CI/CD','fs'],[470,810,'Grounded Gen','ai']], lines:[]},
-    {nodes:[[650,120,'Always On AG','de'],[830,105,'Backup & Recovery','de'],[720,190,'SQL Agent Jobs','de']], lines:[[0,1],[1,2]]},
-    {nodes:[[970,780,'Disaster Recovery','de'],[1155,755,'Query Optimization','de']], lines:[[0,1]]}
-  ];
-  clusters.forEach((c,i)=>{
-    const g = document.createElementNS(NS,'g');
-    g.setAttribute('class','cluster cl'+(i+1));
-    c.lines.forEach(([a,b])=>{
-      const l = document.createElementNS(NS,'line');
-      l.setAttribute('x1',c.nodes[a][0]); l.setAttribute('y1',c.nodes[a][1]);
-      l.setAttribute('x2',c.nodes[b][0]); l.setAttribute('y2',c.nodes[b][1]);
-      l.setAttribute('class','node-line'); g.appendChild(l);
-    });
-    c.nodes.forEach(([x,y,label,type])=>{
-      const n = document.createElementNS(NS,'g');
-      n.setAttribute('class','bob'); n.style.transformBox='fill-box'; n.style.transformOrigin='center';
-      const dot = document.createElementNS(NS,'circle');
-      dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r',2.4);
-      dot.setAttribute('class','node-dot '+type); n.appendChild(dot);
-      const t = document.createElementNS(NS,'text');
-      t.setAttribute('x',x+8); t.setAttribute('y',y+4); t.setAttribute('class','node-text '+type);
-      t.textContent = label; n.appendChild(t);
-      g.appendChild(n);
-    });
-    svg.appendChild(g);
-  });
-})();
+<div class="toast" id="toast">Email copied</div>
 
-// scroll progress
-const prog = document.getElementById('progress');
-addEventListener('scroll', () => {
-  const h = document.documentElement;
-  prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
-}, {passive:true});
-
-// typed line
-const phrases = [
-  'building AI-powered data products…',
-  'evaluating LLM-generated SQL against real databases…',
-  'managing databases to keep them healthy, reliable & available…',
-  'shipping full-stack apps with FastAPI and React…',
-  'open_to_roles = true ✓'
-];
-const typedEl = document.getElementById('typed');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (reduced) { typedEl.textContent = phrases[4]; }
-else {
-  let pi = 0, ci = 0, deleting = false;
-  (function tick(){
-    const p = phrases[pi];
-    typedEl.textContent = p.slice(0, ci);
-    if (!deleting && ci < p.length) { ci++; setTimeout(tick, 42); }
-    else if (!deleting) { deleting = true; setTimeout(tick, 1700); }
-    else if (ci > 0) { ci--; setTimeout(tick, 18); }
-    else { deleting = false; pi = (pi+1) % phrases.length; setTimeout(tick, 350); }
-  })();
-}
-
-// reveal on scroll
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-}), {threshold:.12});
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-// active nav
-const links = document.querySelectorAll('#nav a');
-const secs = [...links].map(a => document.querySelector(a.getAttribute('href')));
-const navIO = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) {
-    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
-  }
-}), {rootMargin:'-40% 0px -55% 0px'});
-secs.forEach(s => s && navIO.observe(s));
-
-// video lightbox
-(function(){
-  const lb = document.getElementById('lightbox');
-  const vid = document.getElementById('lb-video');
-  const titleEl = document.getElementById('lb-title-text');
-  const closeBtn = document.getElementById('lb-close');
-  function open(src, title){
-    vid.src = src;
-    titleEl.textContent = title || 'demo';
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    vid.play().catch(()=>{});
-  }
-  function close(){
-    lb.classList.remove('open');
-    vid.pause();
-    document.body.style.overflow = '';
-    setTimeout(() => { if (!lb.classList.contains('open')) vid.removeAttribute('src'); }, 300);
-  }
-  document.querySelectorAll('[data-video]').forEach(btn => {
-    btn.addEventListener('click', () => open(btn.getAttribute('data-video'), btn.getAttribute('data-video-title')));
-  });
-  closeBtn.addEventListener('click', close);
-  lb.addEventListener('click', e => { if (e.target === lb) close(); });
-  addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
-})();
-
-// copy email
-document.getElementById('copyEmail').addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText('firezer.demese@gmail.com');
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  } catch { location.href = 'mailto:firezer.demese@gmail.com'; }
-});
-</script>
+<script src="script.js"></script>
 </body>
 </html>
