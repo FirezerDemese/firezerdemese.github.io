@@ -291,11 +291,11 @@
       <div class="project-body">
         <div class="project-info">
           <h3 class="project-title">QueryLens</h3>
-          <p class="project-subtitle">SQL workbench with a read-only boundary</p>
-          <p class="project-desc">Three things in one app. <strong>Ask</strong> turns a plain-English question into SQL and runs it. <strong>Analyze</strong> reads a query for the patterns that hurt at scale (SELECT *, leading-wildcard LIKE, a missing WHERE clause) and returns a score plus a rewrite. <strong>Evaluate</strong> runs model-generated SQL against gold answers and reports how often each model actually got the right rows back. Every statement passes through a parser that rejects writes, DDL, and multi-statement input before it reaches the database.</p>
+          <p class="project-subtitle">Natural language to SQL, and a query analyzer</p>
+          <p class="project-desc">Two tools in one app. <strong>Ask</strong> turns a plain-English question into SQL, runs it against a live PostgreSQL database, and shows both the query and the rows that came back. <strong>Analyze</strong> checks a query you already have against nine rules for the patterns that stop an index being used: a function wrapped around an indexed column, a leading-wildcard LIKE, NOT IN against a subquery. It returns a score out of 100, a letter grade, and for every finding, what is wrong and what to write instead. The scoring is plain regex and arithmetic, so the same query always gets the same grade. The model writes SQL; it never grades it. The database connection only executes statements that begin with SELECT.</p>
           <div class="project-tags">
             <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
-            <span>React</span><span>LLM APIs</span><span>Docker</span>
+            <span>Groq &middot; Llama 3.1 8B</span><span>Docker</span><span>Render</span>
           </div>
           <div class="project-links">
             <a href="https://querylens-cudj.onrender.com/" target="_blank" rel="noopener" class="link-btn primary">Live Demo</a>
@@ -303,7 +303,7 @@
           </div>
         </div>
         <div class="project-visual">
-          <img src="images/querylens-diagram.svg" alt="QueryLens architecture: Ask, Analyze and Evaluate all route through a safety parser before reaching a read-only PostgreSQL database.">
+          <img src="images/querylens-diagram.svg" alt="QueryLens has two paths: Ask sends a question to an LLM, checks the generated SQL is a SELECT, and runs it against PostgreSQL; Analyze runs a query through nine regex rules to produce a score, a grade and a fix per finding.">
         </div>
       </div>
     </div>

@@ -16,17 +16,33 @@ window.addEventListener('load', () => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const terms = [
-    ['SQL Server', 'db'], ['T-SQL', 'db'], ['Always On AG', 'db'], ['DMVs', 'db'],
-    ['Execution Plans', 'db'], ['Index Tuning', 'db'], ['Backup & Restore', 'db'],
-    ['Blocking Analysis', 'db'], ['SQL Agent', 'db'], ['PostgreSQL', 'db'],
-    ['Azure SQL', 'db'], ['Managed Instance', 'db'], ['Disaster Recovery', 'db'],
-    ['Query Optimization', 'db'], ['Extended Events', 'db'],
-    ['Groq', 'ai'], ['Llama 3.3', 'ai'], ['Prompt Design', 'ai'], ['LLM Eval', 'ai'],
-    ['Grounded Generation', 'ai'], ['Anomaly Detection', 'ai'], ['Data Contracts', 'ai'],
-    ['Python', 'eng'], ['FastAPI', 'eng'], ['SQLAlchemy', 'eng'], ['PowerShell', 'eng'],
-    ['Docker', 'eng'], ['React', 'eng'], ['CI/CD', 'eng'], ['Linux', 'eng']
-  ];
+  const terms = {
+    db: [
+      'SQL Server', 'T-SQL', 'Always On AG', 'DMVs', 'Execution Plans',
+      'Index Tuning', 'Backup & Restore', 'Blocking Analysis', 'SQL Agent',
+      'PostgreSQL', 'Azure SQL', 'Managed Instance', 'Disaster Recovery',
+      'Query Optimization', 'Extended Events', 'Wait Stats', 'Deadlocks',
+      'TempDB', 'Query Store', 'Statistics', 'Partitioning', 'Columnstore',
+      'Replication', 'Log Shipping', 'DBCC CHECKDB', 'Index Fragmentation',
+      'Isolation Levels', 'Transaction Log', 'Clustered Index', 'Buffer Pool',
+      'Plan Cache', 'Parameter Sniffing', 'Latch Contention', 'Resource Governor',
+      'Point-in-Time Restore', 'Failover Cluster', 'Cardinality Estimation',
+      'Linked Servers', 'Backup Compression', 'Read Committed Snapshot',
+      'sp_whoisactive', 'Ola Hallengren', 'Capacity Planning', 'Cumulative Updates',
+      'TDE', 'RTO / RPO', 'Perfmon', 'SSIS', 'Maintenance Plans', 'Restore Testing'
+    ],
+    ai: [
+      'Groq', 'Llama 3.3', 'Prompt Design', 'LLM Eval', 'Grounded Generation',
+      'Anomaly Detection', 'Data Contracts', 'IsolationForest'
+    ],
+    eng: [
+      'Python', 'FastAPI', 'SQLAlchemy', 'PowerShell', 'Docker', 'React',
+      'CI/CD', 'Linux', 'Bash', 'Git'
+    ]
+  };
+
+  // weighted so the field reads as a DBA's, while AI and full stack still surface
+  const kindPool = ['db', 'db', 'db', 'db', 'db', 'db', 'db', 'ai', 'ai', 'eng', 'eng'];
 
   const colors = {
     db:  { dot: '212,166,85',  text: '212,166,85' },
@@ -41,11 +57,12 @@ window.addEventListener('load', () => {
   let dpr = 1;
 
   function pickTerm() {
-    const free = terms.filter(t => !inUse.has(t[0]));
-    const pool = free.length ? free : terms;
-    const term = pool[Math.floor(Math.random() * pool.length)];
-    inUse.add(term[0]);
-    return term;
+    const kind = kindPool[Math.floor(Math.random() * kindPool.length)];
+    const free = terms[kind].filter(t => !inUse.has(t));
+    const pool = free.length ? free : terms[kind];
+    const label = pool[Math.floor(Math.random() * pool.length)];
+    inUse.add(label);
+    return [label, kind];
   }
 
   function makeNode() {
