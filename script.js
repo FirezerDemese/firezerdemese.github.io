@@ -192,10 +192,11 @@ window.addEventListener('load', () => {
   if (!el) return;
 
   const lines = [
-    'tuning SQL Server so it stays up under load',
-    'building AI tools that read live database telemetry',
-    'auditing ETL batches before they reach production',
-    'shipping FastAPI and React apps end to end'
+    'leading migrations across dozens of production databases',
+    'tuning indexes to match how the data is actually queried',
+    'ranking 4,000 stored procedures by what they really cost',
+    'holding a bad data load in staging before it reaches a report',
+    'refactoring the technical debt that keeps coming back'
   ];
 
   if (reduceMotion) {

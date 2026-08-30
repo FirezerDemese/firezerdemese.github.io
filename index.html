@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Firezer Demese | SQL Server DBA</title>
-  <meta name="description" content="Senior SQL Server DBA in Houston, TX. 150+ production instances, a 6TB primary, 2.5M transactions a day. Building AI tooling on top of live database telemetry." />
-  <meta property="og:title" content="Firezer Demese | SQL Server DBA">
-  <meta property="og:description" content="Senior SQL Server DBA building AI tooling on top of live database telemetry. Houston, TX.">
+  <title>Firezer Demese | Database Engineer &amp; DBA</title>
+  <meta name="description" content="Database Engineer and DBA in Houston, TX. Performance engineering, migrations and consolidation across enterprise SQL Server estates. 150+ production instances, a 6TB primary, 2.5M transactions a day." />
+  <meta property="og:title" content="Firezer Demese | Database Engineer &amp; DBA">
+  <meta property="og:description" content="Database Engineer and DBA. Performance engineering, migrations and consolidation across enterprise SQL Server estates. Houston, TX.">
   <meta property="og:url" content="https://firezerdemese.github.io">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
@@ -44,7 +44,7 @@
 <section id="hero" class="hero">
   <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-center">
-    <div class="hero-eyebrow">SQL Server DBA &middot; Data &amp; AI Tooling</div>
+    <div class="hero-eyebrow">Database Engineer &amp; DBA &middot; Data &amp; AI Tooling</div>
     <h1 class="hero-name">Firezer <span class="gold">Demese</span></h1>
     <div class="hero-typewriter"><span class="tw-prompt">$</span> <span id="twText"></span><span class="tw-cursor"></span></div>
     <div class="hero-badge-row">
@@ -65,20 +65,30 @@
 <section id="about" class="section about">
   <div class="section-label">01 / About</div>
   <div class="about-grid">
-    <div class="about-text">
-      <h2>SQL Server DBA <span class="gold">who builds the tooling I wanted on call.</span></h2>
-      <p>I run production SQL Server for a national tolling platform at TransCore: 150+ instances, a 6TB primary, and roughly 2.5 million transactions a day. Day to day that means tuning queries against real execution plans, keeping Always On availability groups healthy, automating the maintenance that shouldn't need a person, and picking up the phone when something breaks at 2am.</p>
-      <p>Before TransCore I did the same work under bank audit rules at Bank of America, and on energy reporting data at Shell. Different industries, same job: keep the data correct and the server up.</p>
-      <p>For the last two years I've been building tools on top of that experience. SQLGuardian reads live DMV output and explains a blocking chain the way I would explain it to a junior DBA. FlowLens holds an ETL batch in staging until its row counts reconcile. QueryLens grades SQL, including SQL a model wrote. All three run against real SQL Server and Postgres instances.</p>
+    <div class="about-rail">
+      <!-- Replace images/profile.jpg with your own photo, same filename.
+           Until it exists, the placeholder below is shown instead. -->
+      <div class="about-photo">
+        <img src="images/profile.jpg" alt="Firezer Demese"
+             onerror="this.onerror=null;this.src='images/profile-placeholder.svg'">
+        <span class="photo-badge"></span>
+      </div>
+
+      <div class="sys-card" aria-label="Profile summary">
+        <div class="sys-row"><span class="sys-k">role</span><span class="sys-v">Database Engineer &amp; DBA</span></div>
+        <div class="sys-row"><span class="sys-k">location</span><span class="sys-v">Houston, TX &middot; Remote</span></div>
+        <div class="sys-row"><span class="sys-k">core</span><span class="sys-v">SQL Server &middot; Always On &middot; Azure</span></div>
+        <div class="sys-row"><span class="sys-k">building</span><span class="sys-v">C# / .NET &middot; Python &middot; LLM tooling</span></div>
+        <div class="sys-row"><span class="sys-k">cert</span><span class="sys-v">DP-300 (in progress)</span></div>
+        <div class="sys-row"><span class="sys-k">status</span><span class="sys-v ok">open to roles</span></div>
+      </div>
     </div>
 
-    <div class="sys-card" aria-label="Profile summary">
-      <div class="sys-row"><span class="sys-k">role</span><span class="sys-v">Senior SQL Server DBA</span></div>
-      <div class="sys-row"><span class="sys-k">location</span><span class="sys-v">Houston, TX &middot; Remote</span></div>
-      <div class="sys-row"><span class="sys-k">core</span><span class="sys-v">SQL Server &middot; Always On &middot; Azure</span></div>
-      <div class="sys-row"><span class="sys-k">building</span><span class="sys-v">Python &middot; FastAPI &middot; LLM tooling</span></div>
-      <div class="sys-row"><span class="sys-k">cert</span><span class="sys-v">DP-300 (in progress)</span></div>
-      <div class="sys-row"><span class="sys-k">status</span><span class="sys-v ok">open to roles</span></div>
+    <div class="about-text">
+      <h2>Database Engineer <span class="gold">&amp; a proactive DBA.</span> End to end database work.</h2>
+      <p>I do performance engineering across complex enterprise database environments. I lead projects: modernization and migration work across dozens of databases, consolidation initiatives, and DR drill testing. I do index tuning, designing and rebuilding indexes to match how the data is actually queried, and safely removing the unused and redundant ones, which saves cost and improves efficiency. I refactor repeated technical debt and help standardize how the team writes procedures, so the same mistake doesn't ship twice.</p>
+      <p>Backed by 7+ years keeping production SQL Server correct and available across banking, energy, and transportation: audited, regulated, high-transaction environments where being wrong has a cost.</p>
+      <p>I also build intelligent tools. <strong>SQL Estate Triage</strong> ranks which stored procedures in an estate are worth an engineer's time, by joining what the code looks like to what it actually cost at runtime. <strong>QueryLens</strong> flags the anti-patterns I would catch in a real T-SQL code review. <strong>SQLGuardian</strong> ingests a team's SOPs and runbooks to standardize troubleshooting knowledge, shortening resolution time and handling the incident documentation nobody has time to write, so the team's knowledge stays with the team and not just with one person; it writes up the same incident twice, once for the DBA and once for whoever is asking why the app feels slow. <strong>FlowLens</strong> holds a data load in staging until its numbers reconcile, so bad data never reaches a report. They run against SQL Server (Developer Edition) and Postgres.</p>
     </div>
   </div>
 
@@ -155,8 +165,8 @@
       <div class="skill-card-header"><span class="skill-domain-tag ai">AI Tooling</span></div>
       <h3>LLM Integration</h3>
       <div class="tags">
-        <span>Groq</span><span>OpenAI API</span><span>Anthropic API</span>
-        <span>Prompt Design</span><span>Grounded Generation</span>
+        <span>Groq</span><span>Llama 3.1 / 3.3</span><span>Prompt Design</span>
+        <span>Grounded Generation</span><span>SOP &amp; Runbook Ingestion</span>
       </div>
     </div>
 
@@ -203,9 +213,12 @@
           <span class="timeline-company">TransCore &middot; Remote</span>
           <span class="timeline-date">Jan 2023 &ndash; Present</span>
         </div>
-        <p>Own database reliability for a national tolling platform. Tune queries and indexes against real execution plans, run Always On availability groups and the DR drills that prove they work, automate maintenance with SQL Agent and PowerShell, and lead incident response when something goes wrong in production.</p>
+        <p><strong>Led the SQL Server 2016 to 2022 migration across 85+ databases with zero unplanned downtime</strong>, owning the plan, the compatibility testing and the cutover sequencing rather than executing someone else's runbook. Also run the consolidation work that follows a migration, and own the DR drill schedule that proves the availability groups actually fail over.</p>
+        <p>Day to day: performance engineering across the estate. Tune queries and indexes against real execution plans, and <strong>audit the estate for unused and duplicate indexes and remove them safely</strong>, which cuts storage and write overhead on every insert that no longer has to maintain them. Automate maintenance with SQL Agent and PowerShell, and lead incident response when production breaks.</p>
+        <p><strong>Review developer T-SQL before it ships and standardize how the team writes procedures</strong>, so the same anti-pattern does not get fixed twice in two different places. QueryLens came directly out of wanting that gate to be mechanical rather than dependent on who was reviewing that day.</p>
         <div class="xp-stats">
           <span><b>150+</b> instances</span>
+          <span><b>85+</b> databases migrated</span>
           <span><b>6TB</b> largest database</span>
           <span><b>2.5M</b> transactions/day</span>
         </div>
@@ -250,7 +263,7 @@
 <section id="projects" class="section projects">
   <div class="section-label">04 / Projects</div>
   <h2>Things I've <span class="gold">Built</span></h2>
-  <p class="section-lede">Each one came out of a problem I hit on the job. All three of the live ones run against real databases.</p>
+  <p class="section-lede">Each one came out of a problem I hit on the job, and each runs against real SQL Server or Postgres instances rather than fixtures.</p>
 
   <div class="projects-list">
 
@@ -264,8 +277,8 @@
       <div class="project-body">
         <div class="project-info">
           <h3 class="project-title">SQLGuardian</h3>
-          <p class="project-subtitle">AI-assisted SQL Server health monitoring</p>
-          <p class="project-desc">SQLGuardian runs seven DMV-based checks every 60 seconds (blocking chains, wait statistics, Agent job failures, disk space, backup age, log growth, and long-running requests) and hands the snapshot to an LLM that writes the explanation. When it catches blocking it names the head-blocker session, shows the statement holding the lock, and lists the options in order of risk, with KILL last. The same snapshot renders two ways: a technical view for the DBA, and a short summary for whoever is asking why the app feels slow.</p>
+          <p class="project-subtitle">Runbook automation for SQL Server incident response</p>
+          <p class="project-desc">Most monitoring tools tell you something is wrong. SQLGuardian is the layer on top of that: it ingests a team's actual SOPs and runbooks, and when a check fires (blocking chain, wait statistics spike, Agent job failure, disk space, backup age, log growth, long-running request) it walks the on-call engineer through <em>that team's</em> troubleshooting process instead of a generic one. When it catches a blocking chain, it names the head-blocker session, shows the statement holding the lock, and lists resolution options in order of risk, with KILL last. The LLM also drafts the incident report from the evidence the checks already collected, the part of incident response nobody has time to write, so it usually just does not happen. The same underlying data renders two ways: a technical view for the DBA, and a plain-language summary for whoever is asking why the app feels slow.</p>
           <div class="project-tags">
             <span>Python</span><span>FastAPI</span><span>SQL Server 2022</span>
             <span>React</span><span>Docker</span><span>Groq &middot; Llama 3.3 70b</span><span>DMVs</span>
@@ -277,7 +290,32 @@
           </div>
         </div>
         <div class="project-visual">
-          <img src="images/sqlguardian-diagram.svg" alt="SQLGuardian architecture: SQL Server DMVs feed a FastAPI collector, which sends snapshots to an LLM that produces a DBA view and a management summary.">
+          <img src="images/sqlguardian-diagram.svg" alt="SQLGuardian architecture: DMV checks and the team's ingested SOPs and runbooks both feed the LLM, which produces guided resolution steps and a drafted incident report in both a technical and a management view.">
+        </div>
+      </div>
+    </div>
+
+    <!-- SQL Estate Triage -->
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-date">2026</span>
+        <span class="project-status built">Working Build</span>
+        <span class="project-version">4 servers &middot; 4,096 modules</span>
+      </div>
+      <div class="project-body">
+        <div class="project-info">
+          <h3 class="project-title">SQL Estate Triage</h3>
+          <p class="project-subtitle">Which stored procedures in an estate are worth an engineer's time</p>
+          <p class="project-desc">A linter ranks stored procedures by how bad the code looks. That is not the same as which ones are costing you anything. Measured against a 4,096-module estate across four servers, the single most expensive procedure ranked <strong>3,025th of 4,096</strong> by code quality, and the objects a linter puts at the top of its list had no recorded executions at all. Reviewing in linter order means spending the quarter on dead code.</p>
+          <p class="project-desc">It is also how I reverse-engineer an estate nobody documented. SQL Estate Triage inventories the registered servers, extracts and parses every T-SQL module with ScriptDom, collects Query Store runtime data, and joins the two into a ranked worklist with the score breakdown on screen: CPU share, business criticality, logical read share, static risk, complexity, execution frequency. Static analysis is architecturally forbidden from marking anything critical, enforced both in the C# type system and by a CHECK constraint on the findings table, because code shape cannot see cost. Business criticality is gated on measured impact for the same reason: without the gate, procedures nobody runs floated to the top.</p>
+          <p class="project-desc">Everything it does against a monitored server is read only, and it is built to prove that rather than assert it: least privilege (VIEW ANY DEFINITION and VIEW SERVER STATE, never sysadmin), a reader type that exposes only query methods, and a test that parses every SQL constant in the codebase with ScriptDom and fails the build if the syntax tree contains a modification statement or any DDL. A full scan of 15 databases across 4 instances takes 63 seconds, 33 on re-run with unchanged modules skipped by content hash.</p>
+          <div class="project-tags">
+            <span>C# &middot; .NET 10</span><span>ASP.NET Core</span><span>Razor Pages</span>
+            <span>ScriptDom</span><span>Query Store</span><span>SQL Server</span><span>First Responder Kit</span>
+          </div>
+        </div>
+        <div class="project-visual">
+          <img src="images/estatetriage-diagram.svg" alt="SQL Estate Triage architecture: a static analysis layer and a Query Store runtime layer feed a correlation layer, which is the only layer permitted to rank a module critical, producing a ranked worklist.">
         </div>
       </div>
     </div>
@@ -291,8 +329,9 @@
       <div class="project-body">
         <div class="project-info">
           <h3 class="project-title">QueryLens</h3>
-          <p class="project-subtitle">Natural language to SQL, and a query analyzer</p>
-          <p class="project-desc">Two tools in one app. <strong>Ask</strong> turns a plain-English question into SQL, runs it against a live PostgreSQL database, and shows both the query and the rows that came back. <strong>Analyze</strong> checks a query you already have against nine rules for the patterns that stop an index being used: a function wrapped around an indexed column, a leading-wildcard LIKE, NOT IN against a subquery. It returns a score out of 100, a letter grade, and for every finding, what is wrong and what to write instead. The scoring is plain regex and arithmetic, so the same query always gets the same grade. The model writes SQL; it never grades it. The database connection only executes statements that begin with SELECT.</p>
+          <p class="project-subtitle">A code-review gate for T-SQL, plus natural language to SQL</p>
+          <p class="project-desc"><strong>Analyze</strong> checks a query against nine rules for the patterns that stop an index being used: a function wrapped around an indexed column, a leading-wildcard LIKE, NOT IN against a subquery. It returns a score out of 100, a letter grade, and for every finding, what is wrong and what to write instead. The scoring is plain regex and arithmetic, so the same query always gets the same grade. The model writes SQL, it never grades it. I built it as the mechanism for enforcing team coding standards before a query reaches code review, rather than relying on whoever is reviewing that day to remember all nine.</p>
+          <p class="project-desc"><strong>Ask</strong> turns a plain-English question into SQL, runs it against a live PostgreSQL database, and shows both the query and the rows that came back. The database connection only executes statements that begin with SELECT.</p>
           <div class="project-tags">
             <span>Python</span><span>FastAPI</span><span>PostgreSQL</span>
             <span>Groq &middot; Llama 3.1 8B</span><span>Docker</span><span>Render</span>
@@ -343,11 +382,14 @@
       <div class="project-body single">
         <div class="project-info">
           <h3 class="project-title">AuditLens</h3>
-          <p class="project-subtitle">Database access auditing and anomaly detection</p>
-          <p class="project-desc">Builds audit evidence packs mapped to SOX and HIPAA controls, inventories role membership and privilege creep across instances, and flags unusual access against a statistical baseline plus an Isolation Forest model. It came directly out of the evidence-gathering work I did every quarter at Bank of America.</p>
+          <p class="project-subtitle">Audit evidence and access anomaly detection for SQL Server</p>
+          <p class="project-desc">This one comes straight out of the quarter-end evidence gathering I did at Bank of America, where producing the answer took longer than knowing it. Three parts.</p>
+          <p class="project-desc">The <strong>evidence pack builder</strong> runs a fixed query set against each instance (server and database role membership, explicit object grants, login and password policy state, backup and restore history), then renders a dated pack with each result mapped to the SOX or HIPAA control it satisfies. The answer to "who could read this table in Q2" becomes a document you hand over, not an afternoon of ad-hoc queries.</p>
+          <p class="project-desc">The <strong>privilege-creep inventory</strong> diffs role membership between two packs and lists what was granted, to whom, and when. The finding that matters at audit is rarely current state, it is the temporary grant nobody removed.</p>
+          <p class="project-desc">The <strong>access baseline</strong> profiles each principal per database on its normal hours, its normal set of objects and its normal read volume, then runs an Isolation Forest over those features to flag sessions that do not fit. A concrete example of what that catches: a reporting service account that reads the same six tables every weekday between 06:00 and 20:00 starts reading a seventh at 03:00 on a Sunday. It holds permission to do that, so no rule-based check fires and nothing shows up in an access review. It only stands out against the account's own history.</p>
           <div class="project-tags">
             <span>Python</span><span>SQL Server</span><span>scikit-learn</span>
-            <span>RBAC</span><span>LLM Narration</span>
+            <span>Isolation Forest</span><span>RBAC</span><span>SOX / HIPAA Mapping</span>
           </div>
         </div>
       </div>

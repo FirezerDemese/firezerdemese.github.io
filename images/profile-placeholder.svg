@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" width="420" height="520" role="img" aria-label="Profile photo placeholder">
+  <defs>
+    <clipPath id="frame"><rect x="0" y="0" width="420" height="520" rx="4"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="420" height="520" fill="#1a222c"/>
+    <g fill="none" stroke="#d4a655" stroke-opacity="0.16" stroke-width="1">
+      <path d="M0 130 H420 M0 260 H420 M0 390 H420 M105 0 V520 M210 0 V520 M315 0 V520"/>
+    </g>
+    <circle cx="210" cy="205" r="66" fill="none" stroke="#96743a" stroke-width="2"/>
+    <path d="M104 400c0-58 47-105 106-105s106 47 106 105z" fill="none" stroke="#96743a" stroke-width="2"/>
+    <text x="210" y="452" text-anchor="middle"
+          font-family="ui-monospace,'Courier New',monospace" font-size="15" fill="#97a1af"
+          letter-spacing="1.5">images/profile.jpg</text>
+    <text x="210" y="476" text-anchor="middle"
+          font-family="ui-monospace,'Courier New',monospace" font-size="12" fill="#5c6774"
+          letter-spacing="1">drop your photo here</text>
+  </g>
+</svg>

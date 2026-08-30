@@ -356,9 +356,43 @@ section[id] { scroll-margin-top: 70px; }
    ============================================ */
 .about-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 296px 1fr;
+  gap: 3.5rem;
   align-items: start;
+}
+
+.about-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-photo {
+  position: relative;
+  width: 100%;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 21 / 26;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  filter: grayscale(25%);
+  transition: filter 0.3s;
+}
+
+.about-photo img:hover { filter: grayscale(0%); }
+
+.photo-badge {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 46%;
+  height: 15%;
+  background: var(--gold);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-radius: 0 0 4px 0;
 }
 
 .about-text h2 { margin-bottom: 1.6rem; }
@@ -373,9 +407,9 @@ section[id] { scroll-margin-top: 70px; }
   background: var(--navy-card);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 1.5rem;
+  padding: 1.3rem;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.7rem;
 }
 
 .sys-row {
@@ -664,6 +698,12 @@ section[id] { scroll-margin-top: 70px; }
   background: rgba(212, 166, 85, 0.07);
   color: var(--gold);
   border: 1px solid rgba(212, 166, 85, 0.3);
+}
+
+.project-status.built {
+  background: rgba(123, 163, 201, 0.08);
+  color: #7ba3c9;
+  border: 1px solid rgba(123, 163, 201, 0.3);
 }
 
 .project-body {
@@ -1057,6 +1097,9 @@ footer {
 
   .section { padding: 4.5rem 1.4rem; }
   .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about-rail { flex-direction: row; align-items: flex-start; gap: 1.2rem; }
+  .about-photo { width: 150px; flex-shrink: 0; }
+  .about-rail .sys-card { flex: 1; min-width: 0; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .project-body { grid-template-columns: 1fr; padding: 1.6rem; }
   .project-visual { order: -1; }
@@ -1072,6 +1115,8 @@ footer {
   .hero-cta a { width: 100%; text-align: center; }
 
   .about-stats { grid-template-columns: repeat(2, 1fr); }
+  .about-rail { flex-direction: column; }
+  .about-photo { width: 160px; }
   .skills-grid { grid-template-columns: 1fr; }
   .contact-links { grid-template-columns: 1fr; }
   .project-meta { padding: 0.8rem 1.6rem; }

@@ -20,44 +20,44 @@
   <rect class="bg" x="0.5" y="0.5" width="599" height="399" rx="6"/>
   <text class="cap" x="20" y="26">querylens &#183; two paths</text>
 
-  <rect class="box-o" x="40" y="52" width="250" height="56" rx="5"/>
-  <text class="t" x="165" y="76">Ask</text>
-  <text class="s" x="165" y="92">a question in English</text>
-
   <rect class="box-o" x="310" y="52" width="250" height="56" rx="5"/>
-  <text class="t" x="435" y="76">Analyze</text>
-  <text class="s" x="435" y="92">SQL you already have</text>
+  <text class="t" x="435" y="76">Ask</text>
+  <text class="s" x="435" y="92">a question in English</text>
 
-  <path class="arrow" marker-end="url(#ah)" d="M165,108 L165,134"/>
+  <rect class="box-o" x="40" y="52" width="250" height="56" rx="5"/>
+  <text class="t" x="165" y="76">Analyze</text>
+  <text class="s" x="165" y="92">SQL you already have</text>
+
   <path class="arrow" marker-end="url(#ah)" d="M435,108 L435,134"/>
+  <path class="arrow" marker-end="url(#ah)" d="M165,108 L165,134"/>
 
-  <rect class="box-a" x="40" y="138" width="250" height="56" rx="5"/>
-  <text class="t gold" x="165" y="162">Groq &#183; Llama 3.1 8B</text>
-  <text class="s" x="165" y="178">writes the SQL</text>
+  <rect class="box-a" x="310" y="138" width="250" height="56" rx="5"/>
+  <text class="t gold" x="435" y="162">Groq &#183; Llama 3.1 8B</text>
+  <text class="s" x="435" y="178">writes the SQL</text>
 
-  <rect class="box" x="310" y="138" width="250" height="56" rx="5"/>
-  <text class="t" x="435" y="162">9 regex rules</text>
-  <text class="s" x="435" y="178">deterministic, no model</text>
+  <rect class="box" x="40" y="138" width="250" height="56" rx="5"/>
+  <text class="t" x="165" y="162">9 regex rules</text>
+  <text class="s" x="165" y="178">deterministic, no model</text>
 
-  <path class="arrow" marker-end="url(#ah)" d="M165,194 L165,220"/>
   <path class="arrow" marker-end="url(#ah)" d="M435,194 L435,220"/>
-
-  <rect class="box" x="40" y="224" width="250" height="56" rx="5"/>
-  <text class="t" x="165" y="248">SELECT-only check</text>
-  <text class="s" x="165" y="264">anything else is rejected</text>
+  <path class="arrow" marker-end="url(#ah)" d="M165,194 L165,220"/>
 
   <rect class="box" x="310" y="224" width="250" height="56" rx="5"/>
-  <text class="t" x="435" y="248">Score and grade</text>
-  <text class="s" x="435" y="264">0-100, A through F</text>
+  <text class="t" x="435" y="248">SELECT-only check</text>
+  <text class="s" x="435" y="264">anything else is rejected</text>
 
-  <path class="arrow" marker-end="url(#ah)" d="M165,280 L165,306"/>
+  <rect class="box" x="40" y="224" width="250" height="56" rx="5"/>
+  <text class="t" x="165" y="248">Score and grade</text>
+  <text class="s" x="165" y="264">0-100, A through F</text>
+
   <path class="arrow" marker-end="url(#ah)" d="M435,280 L435,306"/>
-
-  <rect class="box-o" x="40" y="310" width="250" height="56" rx="5"/>
-  <text class="t" x="165" y="334">PostgreSQL</text>
-  <text class="s" x="165" y="350">query and rows come back</text>
+  <path class="arrow" marker-end="url(#ah)" d="M165,280 L165,306"/>
 
   <rect class="box-o" x="310" y="310" width="250" height="56" rx="5"/>
-  <text class="t" x="435" y="334">Fix for each finding</text>
-  <text class="s" x="435" y="350">what to write instead</text>
+  <text class="t" x="435" y="334">PostgreSQL</text>
+  <text class="s" x="435" y="350">query and rows come back</text>
+
+  <rect class="box-o" x="40" y="310" width="250" height="56" rx="5"/>
+  <text class="t" x="165" y="334">Fix for each finding</text>
+  <text class="s" x="165" y="350">what to write instead</text>
 </svg>

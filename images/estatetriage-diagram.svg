@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-label="SQL Estate Triage joins static analysis of T-SQL modules to Query Store runtime cost, and only the correlation layer may rank something critical">
+  <style>
+    .bg    { fill:#141b24; stroke:#242e3a; }
+    .box   { fill:#1e2833; stroke:#2f3b49; }
+    .box-a { fill:#241f16; stroke:#d4a655; }
+    .box-o { fill:#1b242e; stroke:#3a4756; }
+    .t     { font-family:ui-monospace,'Courier New',monospace; font-size:12px; fill:#e8e4dc; text-anchor:middle; }
+    .s     { font-family:ui-monospace,'Courier New',monospace; font-size:9.5px; fill:#97a1af; text-anchor:middle; }
+    .cap   { font-family:ui-monospace,'Courier New',monospace; font-size:10px; fill:#5c6774; }
+    .gold  { fill:#d4a655; }
+    .red   { fill:#d9737f; }
+    .green { fill:#5fbf92; }
+    .arrow { stroke:#5c6774; stroke-width:1.2; fill:none; }
+  </style>
+
+  <defs>
+    <marker id="ah" markerWidth="8" markerHeight="8" refX="6.5" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5c6774"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0.5" y="0.5" width="599" height="419" rx="6"/>
+  <text class="cap" x="20" y="26">sqlestatetriage &#183; code shape cannot see cost</text>
+
+  <rect class="box" x="35" y="48" width="250" height="56" rx="5"/>
+  <text class="t" x="160" y="72">stat &#183; ScriptDom</text>
+  <text class="s" x="160" y="88">what the code looks like</text>
+
+  <rect class="box" x="315" y="48" width="250" height="56" rx="5"/>
+  <text class="t" x="440" y="72">rt &#183; Query Store</text>
+  <text class="s" x="440" y="88">what it cost at runtime</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M160,104 L235,146"/>
+  <path class="arrow" marker-end="url(#ah)" d="M440,104 L365,146"/>
+
+  <rect class="box-a" x="100" y="150" width="400" height="56" rx="5"/>
+  <text class="t gold" x="300" y="174">corr &#183; the assessment</text>
+  <text class="s" x="300" y="190">the only layer allowed to say Critical</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M300,206 L300,236"/>
+
+  <rect class="box" x="100" y="240" width="400" height="56" rx="5"/>
+  <text class="t" x="300" y="264">Ranked worklist</text>
+  <text class="s" x="300" y="280">score out of 100, every factor shown</text>
+
+  <path class="arrow" marker-end="url(#ah)" d="M300,296 L300,316"/>
+
+  <rect class="box-o" x="35" y="320" width="530" height="76" rx="5"/>
+  <text class="s" x="300" y="342">measured on the test estate: the single most expensive module</text>
+  <text class="t" x="300" y="362">usp_LegacyLiquidityExtract0074_RETIRED</text>
+  <text class="s" x="300" y="382"><tspan class="red">ranked 3,025 of 4,096 by code quality</tspan>   <tspan class="green">ranked 1 by measured cost</tspan></text>
+</svg>
