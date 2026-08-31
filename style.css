@@ -403,6 +403,47 @@ section[id] { scroll-margin-top: 70px; }
   font-size: 1rem;
 }
 
+.about-text p strong { color: var(--white); font-weight: 500; }
+
+/* Bulleted high points: About, Experience and project cards share the marker */
+.about-list,
+.xp-list,
+.project-points {
+  list-style: none;
+  margin-bottom: 1.3rem;
+}
+
+.about-list li,
+.xp-list li,
+.project-points li {
+  position: relative;
+  padding-left: 1.15rem;
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+}
+
+.about-list li::before,
+.xp-list li::before,
+.project-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.75;
+}
+
+.about-list li strong,
+.xp-list li strong,
+.project-points li strong { color: var(--white); font-weight: 500; }
+
+.about-list li { font-size: 1rem; }
+.xp-list li { font-size: 0.95rem; }
+.project-points li { font-size: 0.94rem; }
+
 .sys-card {
   background: var(--navy-card);
   border: 1px solid var(--border);

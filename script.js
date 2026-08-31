@@ -32,7 +32,7 @@ window.addEventListener('load', () => {
       'TDE', 'RTO / RPO', 'Perfmon', 'SSIS', 'Maintenance Plans', 'Restore Testing'
     ],
     ai: [
-      'Groq', 'Llama 3.3', 'Prompt Design', 'LLM Eval', 'Grounded Generation',
+      'Groq', 'GPT-OSS 120b', 'Prompt Design', 'LLM Eval', 'Grounded Generation',
       'Anomaly Detection', 'Data Contracts', 'IsolationForest'
     ],
     eng: [

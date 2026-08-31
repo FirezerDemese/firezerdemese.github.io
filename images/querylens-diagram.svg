@@ -32,7 +32,7 @@
   <path class="arrow" marker-end="url(#ah)" d="M165,108 L165,134"/>
 
   <rect class="box-a" x="310" y="138" width="250" height="56" rx="5"/>
-  <text class="t gold" x="435" y="162">Groq &#183; Llama 3.1 8B</text>
+  <text class="t gold" x="435" y="162">Groq &#183; GPT-OSS 20b</text>
   <text class="s" x="435" y="178">writes the SQL</text>
 
   <rect class="box" x="40" y="138" width="250" height="56" rx="5"/>

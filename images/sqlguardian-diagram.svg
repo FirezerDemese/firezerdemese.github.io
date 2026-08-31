@@ -43,7 +43,7 @@
   <path class="arrow" marker-end="url(#ah)" d="M440,182 L365,210"/>
 
   <rect class="box-a" x="100" y="214" width="400" height="56" rx="5"/>
-  <text class="t gold" x="300" y="238">Llama 3.3 70b via Groq</text>
+  <text class="t gold" x="300" y="238">GPT-OSS 120b via Groq</text>
   <text class="s" x="300" y="254">matches the firing check to the team's documented procedure</text>
 
   <path class="arrow" marker-end="url(#ah)" d="M245,270 L165,318"/>
